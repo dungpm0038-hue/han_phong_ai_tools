@@ -20,7 +20,7 @@ The auth email template must use Supabase's PKCE confirmation/link flow (`Confir
 
 Import the GitHub repository, Framework: Next.js, project root: repository root, install command `npm ci`, build command `npm run build`, Node 24. Set all variables from `.env.example` separately for Preview/Production. `NEXT_PUBLIC_SITE_URL` must equal each deployment's canonical origin, with https in production. Keep service-role and OpenAI keys server-only. Do not use production data in preview deployments.
 
-The PDF worker is resolved from pdf-parse, which is externalized by Next. Verify Vercel's tracing includes it and that worker_threads + PDF.js work using a real small PDF in staging. Function maxDuration is 60s for AI and 30s for documents; confirm the Vercel plan supports these limits. Upload limit 4 MiB accounts for Vercel ingress. No filesystem persistence is used.
+The PDF worker resolves pdf-parse inside its Node runtime to avoid bundler module IDs. Next tracing explicitly includes the parser, adjacent PDF.js worker and canvas/native assets. Run `npm run build` followed by `npm run test:pdf:built` to exercise the compiled worker and route with local fixtures. Verify Vercel's tracing includes it and that worker_threads + PDF.js work using a real small PDF in staging. Function maxDuration is 60s for AI and 30s for documents; confirm the Vercel plan supports these limits. Upload limit 4 MiB accounts for Vercel ingress. No filesystem persistence is used.
 
 ## 3. Custom domain (after explicit approval)
 

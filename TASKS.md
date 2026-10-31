@@ -2,13 +2,15 @@
 
 ## Triển khai website — 01/11/2026
 
-- Người dùng yêu cầu đưa ứng dụng lên website; xác nhận chưa tạo project Vercel hoặc Supabase.
-- Mã nguồn và cấu hình cloud đã push lên GitHub `main` tại commit `4475247` trước bước triển khai.
-- Đã kiểm tra cấu hình hiện có: không có project Vercel liên kết, Vercel CLI auth, biến môi trường Supabase/OpenAI hoặc file env production/local; không có connector triển khai Vercel trong phiên.
-- Đã thêm `vercel.json` chỉ định Next.js, `npm ci` và `npm run build`, giữ output mặc định để không nhầm website Firebase cũ với ứng dụng Next.js.
-- Đã viết `docs/GO_LIVE_VI.md`: tạo project, migration, biến môi trường, Auth/SMTP, kiểm thử thật, trình tự domain và DNS.
-- Chưa tạo deployment hoặc sửa DNS. Bước ngoài môi trường cần chủ tài khoản đăng nhập, tạo project, cấp quyền GitHub và nhập khóa dịch vụ an toàn.
-- Không tuyên bố website hoạt động đầy đủ trước khi có URL deployment và kiểm thử Supabase/OpenAI/PDF thực tế.
+- Người dùng yêu cầu triển khai và đã tạo project Supabase, gửi ảnh trạng thái Healthy. Ảnh xác nhận project tồn tại nhưng chưa cung cấp quyền quản trị hoặc xác minh schema.
+- Kiểm tra actual runtime: chưa có Supabase Management token, Vercel token, file env ứng dụng, outbound identity hoặc connector cho hai dịch vụ. Chưa thể chạy SQL trên project hoặc tạo deployment thật.
+- Đã lưu yêu cầu secret cá nhân `SUPABASE_ACCESS_TOKEN` và `VERCEL_TOKEN` vào draft cấu hình. Các đích API được thêm là `api.supabase.com` và `api.vercel.com`; chưa có giá trị hoặc observed readiness, chưa tự Publish môi trường.
+- `vercel.json` và hướng dẫn tiếng Việt đã được push ở commit `d957fff`; hướng dẫn nay bổ sung cách cấp quyền qua phần Secrets, không qua chat.
+- Đã phát hiện và sửa lỗi production PDF: Turbopack biến `require.resolve` ngoài worker thành module ID dạng số. Parser nay resolve trong Node worker và có tracing rõ ràng cho PDF.js worker/canvas native.
+- Production build đạt. Exact compiled PDF worker đã đọc PDF thật từ các asset được copy chỉ theo trace; compiled upload route trả 201 với Auth/RPC giả lập cục bộ dùng riêng cho kiểm thử. Không có auth bypass trong ứng dụng.
+- 14/14 kiểm thử PostgreSQL nhúng/giới hạn dữ liệu và 5/5 kiểm thử PDF source đạt. Post-build PDF integration check đã đạt và được thêm vào CI qua `npm run test:pdf:built`.
+- Documents route trace có tổng kích thước khoảng 62,56 MiB; các native package được kiểm tra là Linux GNU/musl có trong lần cài hiện tại.
+- Chưa tạo website Vercel, chưa apply migration vào Supabase thật, chưa gọi OpenAI thật và chưa sửa DNS. Bước tiếp theo cần chủ tài khoản nhập token an toàn và áp dụng cấu hình môi trường; OpenAI key của website nhập trực tiếp trong Vercel Environment Variables khi project sẵn sàng.
 
 Cập nhật: 31/10/2026. Mã nguồn được triển khai trong `/workspace/han_phong_ai_tools`; không deploy production, không thay đổi DNS và không triển khai thanh toán.
 

@@ -1,19 +1,21 @@
 import { Worker } from "node:worker_threads";
-import { createRequire } from "node:module";
 import { MAX_DOCUMENT_CHARS, MAX_PDF_PAGES } from "./limits.mjs";
 // Parse in a killable worker. Never execute embedded scripts, fetch PDF URLs, or persist the source file.
 /** @param {Uint8Array} bytes
  * @returns {Promise<{text:string,totalPages:number,processedPages:number,truncated:boolean}>}
  */
 export async function extractPdfInWorker(bytes) {
-  const require = createRequire(import.meta.url);
-  const modulePath = require.resolve("pdf-parse");
   return new Promise((resolve, reject) => {
     const worker = new Worker(
       `
    const {parentPort,workerData}=require('node:worker_threads');
    (async()=>{
-    const {PDFParse}=require(workerData.modulePath);
+    // Resolve inside the Node worker. Bundlers can replace outer require.resolve
+    // calls with numeric module IDs, which cannot be required in a fresh worker.
+    const {createRequire}=require('node:module');
+    const {join}=require('node:path');
+    const requireFromProject=createRequire(join(workerData.moduleRoot,'package.json'));
+    const {PDFParse}=requireFromProject('pdf-parse');
     const parser=new PDFParse({data:new Uint8Array(workerData.bytes),isEvalSupported:false});
     try{
      const info=await parser.getInfo();
@@ -28,7 +30,7 @@ export async function extractPdfInWorker(bytes) {
       {
         eval: true,
         workerData: {
-          modulePath,
+          moduleRoot: process.cwd(),
           bytes,
           maxChars: MAX_DOCUMENT_CHARS,
           maxPages: MAX_PDF_PAGES,

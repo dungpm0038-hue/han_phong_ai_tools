@@ -53,6 +53,8 @@ Schema: profiles, conversations, messages, documents, usage_records, subscriptio
 
 `npm test` runs Node tests for bounded streaming bodies, actual PDF worker parsing and PostgreSQL migration/RLS/quota behavior using PGlite. These tests use no external credentials. PGlite validates PostgreSQL behavior in one embedded connection; it does not substitute for multi-connection tests against Supabase staging.
 
+After a production build, run `npm run test:pdf:built`. This copies only traced parser/native assets into an isolated directory, executes the compiled PDF worker, then exercises the production upload route against disposable local Auth/RPC fixtures. It checks production bundling without contacting Supabase or OpenAI and does not replace a live Vercel smoke test. CI runs it after build.
+
 To test database policies and atomic reservations, use a **disposable staging Supabase project**, apply migration and configure `.env.local`, then:
 
 ```bash

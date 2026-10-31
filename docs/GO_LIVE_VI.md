@@ -4,6 +4,23 @@ Tài liệu này dành cho chủ tài khoản triển khai lần đầu. Reposit
 
 Không gửi mật khẩu, API key hoặc token trong chat. Nhập chúng trực tiếp trong giao diện dịch vụ. Hiện chưa có project Vercel/Supabase được kết nối với phiên Codex; các bước tạo tài khoản, cấp quyền GitHub và thanh toán dịch vụ cần chủ tài khoản thực hiện.
 
+## Cấp quyền để Codex tiếp tục tự động
+
+Tạo project Supabase mới chưa tự cấp quyền quản trị cho Codex. Nếu muốn Codex chạy migration và triển khai thay bạn, cấu hình hai token sau qua **phần Secrets của cài đặt môi trường Codex**, không qua tin nhắn:
+
+| Biến                    | Lấy ở đâu                                       | Mục đích                                                                  |
+| ----------------------- | ----------------------------------------------- | ------------------------------------------------------------------------- |
+| `SUPABASE_ACCESS_TOKEN` | <https://supabase.com/dashboard/account/tokens> | Quyền Management API để kiểm tra project, chạy migration và cấu hình Auth |
+| `VERCEL_TOKEN`          | <https://vercel.com/account/settings/tokens>    | Quyền API Vercel để tạo/kiểm tra project và deployment                    |
+
+`SUPABASE_ACCESS_TOKEN` là token quản trị tài khoản, khác publishable key và service-role key của project. `VERCEL_TOKEN` là token của Vercel, khác token GitHub. Nếu chưa có tài khoản Vercel, đăng nhập bằng GitHub và cấp quyền truy cập repository của ứng dụng.
+
+Hai yêu cầu secret đã được lưu trong draft cấu hình môi trường; chỉ cho phép gửi đến `api.supabase.com` và `api.vercel.com` tương ứng. Nhập giá trị qua giao diện an toàn, xem/lưu thay đổi rồi Publish cấu hình môi trường để áp dụng nếu giao diện yêu cầu. Thao tác này áp dụng cấu hình cho môi trường Codex, không thay thế deployment website trên Vercel. Codex chưa tự thực hiện thao tác Publish đó.
+
+Sau khi quyền được áp dụng, báo lại để Codex kiểm tra kết nối và tiếp tục. Việc lưu tên yêu cầu secret chưa tạo token hoặc xác nhận quyền đã sử dụng được. Nếu token chỉ được cung cấp qua proxy, không sao chép placeholder của nó thành secret trên Vercel; các khóa ứng dụng phải được cấu hình thực sự cho deployment.
+
+Khóa OpenAI của ứng dụng cần được nhập trong **Vercel → Project → Settings → Environment Variables** dưới tên `OPENAI_API_KEY`; không gửi khóa trong chat. Không kích hoạt billing hoặc thay đổi DNS trước khi chủ tài khoản xác nhận thao tác cụ thể.
+
 ## 1. Tạo Supabase
 
 1. Mở <https://supabase.com/dashboard>, đăng nhập bằng GitHub hoặc email.

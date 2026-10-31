@@ -1,6 +1,16 @@
 import type { NextConfig } from "next";
 const config: NextConfig = {
   serverExternalPackages: ["pdf-parse"],
+  // The parser is loaded inside an eval worker, outside Next's static module graph.
+  // Include its adjacent PDF.js worker and the canvas native runtime explicitly.
+  outputFileTracingIncludes: {
+    "/api/documents": [
+      "./node_modules/pdf-parse/package.json",
+      "./node_modules/pdf-parse/dist/pdf-parse/cjs/**/*",
+      "./node_modules/@napi-rs/canvas/**/*",
+      "./node_modules/@napi-rs/canvas-*/**/*",
+    ],
+  },
   async headers() {
     return [
       {
