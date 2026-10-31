@@ -15,22 +15,32 @@
 
 Triển khai trực tiếp 81 file lấy từ Git commit (638.534 byte), không upload node_modules, build local hoặc secrets. Tài khoản chưa cài Vercel GitHub App, nên deployment này **chưa có tự động triển khai khi push GitHub**. Cần kết nối tại <https://github.com/apps/vercel> và liên kết đúng repository nếu muốn bật luồng đó. Các commit chỉ cập nhật tài liệu sau source commit ở trên chưa tự tạo deployment mới.
 
-## Đã và chưa xác minh
+## Supabase thật đã cấu hình
 
-- Build cloud Vercel hoàn tất, production alias được gắn.
-- Bản sửa PDF production đã được kiểm thử với compiled worker và local Auth/RPC fixtures trước khi upload; chưa phải kiểm thử PDF trên Vercel với Supabase thật.
-- Runtime có token Vercel sử dụng được. `SUPABASE_ACCESS_TOKEN`, khóa ứng dụng Supabase và OpenAI chưa có trong phiên được kiểm tra.
-- Chưa chạy migration hoặc cấu hình Auth trên project Supabase thật của người dùng; ảnh Healthy chưa cấp quyền quản trị.
-- Chưa xác minh trực tiếp HTTP của URL production từ môi trường Codex: proxy trả 403 ở bước CONNECT. Domain production đã được thêm vào allowlist của **draft**, giữ nguyên các miền API hiện có, nhưng agent chưa Publish/apply thay đổi đó.
-- Các tính năng cần Supabase/OpenAI hiện chưa sẵn sàng; guard Auth/API vẫn giữ nguyên, không có mock dữ liệu hoặc bỏ qua xác thực.
+- Project đã xác thực: `gernmdmumfmmnlwyxkiw`, trạng thái `ACTIVE_HEALTHY`.
+- Đã áp dụng đúng initial SQL một lần qua Management migrations API. Lịch sử live ghi version `20261031181650`, name `han_phong_ai_tools_initial`; source là `supabase/migrations/202610310001_initial.sql`. Không chạy lại initial migration trên project này. Nếu chuyển sang quản lý bằng CLI, cần đối chiếu/repair lịch sử bằng công cụ Supabase trước khi db push, thay vì tạo lại các bảng.
+- Sáu bảng đã tồn tại và bật RLS, 11 policy được kiểm tra qua database metadata.
+- Năm RPC quota/PDF chỉ cho service_role thực thi; authenticated không được INSERT usage/messages/documents hoặc UPDATE subscriptions.
+- Trigger `on_auth_user_created` và FK ownership `(conversation_id,user_id)` đã được xác minh.
+- Auth Site URL là `https://han-phong-ai-tools.vercel.app`; redirect allowlist có đúng `/auth/callback`.
+- Mật khẩu tối thiểu 10 ký tự; xác nhận email vẫn bật (`mailer_autoconfirm=false`). SMTP riêng chưa cấu hình, nên chưa xác minh gửi email cho người dùng công khai.
+
+## Deployment và tích hợp còn thiếu
+
+- Trang chủ production đã trả HTTP 200; branding và headline tiếng Việt được xác minh sau khi quyền network mới được người dùng áp dụng.
+- Vercel Production đã có `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL` và tên biến `OPENAI_API_KEY`. Chưa đọc giá trị OpenAI key hoặc xác minh model/billing.
+- Hai khóa ứng dụng Supabase chưa được đọc/chuyển: `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (publishable hoặc anon) và `SUPABASE_SERVICE_ROLE_KEY` (service_role hoặc secret server key).
+- Automatic approval review từ chối hành động đọc service-role key và chuyển sang Vercel do cần chấp thuận riêng cho đúng payload/destination. Không thử đường vòng hoặc thực hiện lại hành động bị từ chối. Không có khóa bị in ra hay ghi vào repository.
+- Phạm vi đang chờ chủ tài khoản đồng ý: lấy hai khóa hiện có của đúng project `gernmdmumfmmnlwyxkiw`, lưu vào Environment Variables **Production** của Vercel `han-phong-ai-tools`, team `nhp6`, project ID `prj_mg9C46BABNVSsPMwO3eXZaqah2IR`, qua `api.vercel.com`. Public key dùng ở cấu hình public như Supabase thiết kế; service-role key lưu dạng encrypted, chỉ biến server, không có prefix NEXT_PUBLIC_. Không gửi khóa trong chat.
+- Chưa redeploy sau thay đổi cấu hình Supabase vì hai khóa còn bị chặn; bản build hiện tại chưa bật đầy đủ đăng nhập/dashboard/AI.
+- Bản sửa PDF đã qua compiled-worker/route tests với local fixtures; các công cụ và đăng nhập thực tế vẫn cần kiểm thử sau khi key được cấu hình và redeploy.
 
 ## Bước tiếp theo
 
-1. Nhập `SUPABASE_ACCESS_TOKEN` qua phần Secrets trong cài đặt môi trường Codex (không qua chat); giữ binding Vercel đã hoạt động. Lưu và Publish cấu hình nếu giao diện yêu cầu để áp dụng token cùng quyền truy cập domain mới.
-2. Sau khi Management API hoạt động, kiểm tra đúng project Supabase đã tạo, áp dụng migration nếu schema chưa có, cấu hình URL Auth và kiểm tra RLS. Không chạy lại migration tạo bảng một cách mù quáng.
-3. Cấu hình các khóa ứng dụng vào Vercel bằng giá trị thực. Không sao chép placeholder của proxy sang Environment Variables của deployment.
-4. OpenAI API key nhập trực tiếp ở <https://vercel.com/nhp6/han-phong-ai-tools/settings/environment-variables> với tên `OPENAI_API_KEY`, target Production. Không tự tạo billing hoặc mua credit thay chủ tài khoản.
-5. Redeploy sau khi các biến môi trường thay đổi; kiểm thử đăng ký/email/đăng nhập, Chat, Writer, PDF và giới hạn với dịch vụ thật.
+1. Xin sự chấp thuận cụ thể cho việc đọc/chuyển hai khóa Supabase nói trên vào đúng Vercel project. Không yêu cầu chủ tài khoản gửi giá trị khóa trong chat.
+2. Khi được chấp thuận, thực hiện chuyển trực tiếp qua API, không in/log/ghi file khóa. Không xoay hoặc tạo thêm key nếu khóa hiện có sử dụng được.
+3. Redeploy production với cấu hình đầy đủ, kiểm tra Auth/session, Chat, Writer, PDF và quota với dịch vụ thật. Giữ nguyên RLS, email confirmation và các guard API.
+4. Hoàn thiện SMTP riêng trước khi mở đăng ký email rộng rãi; không tự mua dịch vụ hoặc cấu hình billing thay chủ tài khoản.
 
 ## Domain riêng — chỉ đọc, chưa áp dụng
 

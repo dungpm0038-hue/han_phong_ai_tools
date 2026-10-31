@@ -2,6 +2,16 @@
 
 ## Triển khai website — 01/11/2026
 
+### Cập nhật sau khi cấp quyền Supabase
+
+- Cả hai token Management đã ready và được kiểm tra bằng API thực tế. Project Supabase đúng là `gernmdmumfmmnlwyxkiw`; trang production trả HTTP 200 và đúng nội dung tiếng Việt.
+- Preflight xác nhận không có sáu bảng, các RPC/trigger hay migration cũ; đã apply initial SQL qua Management migrations API một lần, history version `20261031181650`.
+- Postflight trên DB thật đạt: 6 bảng có RLS, 11 policy, 5 RPC service-role-only, trigger tạo hồ sơ và FK ownership; client không thể tự sửa usage/gói.
+- Auth đã cấu hình Site URL/callback production, mật khẩu tối thiểu 10 ký tự và giữ xác nhận email; SMTP riêng chưa có.
+- Đã đặt URL Supabase công khai trong Vercel; kiểm tra chỉ tên biến cho thấy `OPENAI_API_KEY` Production đã có, chưa kiểm tra giá trị hoặc gọi model.
+- Auto-review từ chối việc đọc và chuyển service-role key từ Supabase sang Vercel vì cần chấp thuận riêng đúng payload/destination. Chưa đọc/chuyển các khóa; không thử cách vòng qua chặn.
+- Chờ người dùng đồng ý lấy các khóa ứng dụng của đúng Supabase project và lưu `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` + `SUPABASE_SERVICE_ROLE_KEY` (encrypted server-only) vào Production của Vercel `han-phong-ai-tools`/team `nhp6`. Sau đó mới redeploy và kiểm thử đầy đủ.
+
 ### Cập nhật sau khi cấp quyền Vercel
 
 - Vercel token đã được bind và API xác thực thành công. Supabase Management token và các khóa ứng dụng vẫn vắng mặt trong actual runtime.
@@ -50,7 +60,8 @@ Ban đầu sandbox chặn kết nối proxy. Cài đặt và build đã thành c
 - [x] Guard riêng ở cả layout/page và từng API; không có demo bypass.
 - [x] Sáu bảng yêu cầu, indexes, checks, FK ownership, RLS, grants tối thiểu, trigger tạo profile/subscription.
 - [x] Migration đã được thực thi bằng PostgreSQL nhúng PGlite; test RLS, hạn chế sửa usage/plan và trigger đạt.
-- [ ] Apply migration lên Supabase staging; kiểm tra đăng ký/email confirmation/login/logout, SMTP và cookies thực tế.
+- [x] Apply migration lên Supabase thật và xác minh schema/RLS/grants qua Management API.
+- [ ] Kiểm tra đăng ký/email confirmation/login/logout, SMTP và cookies thực tế sau chuyển khóa được chấp thuận và redeploy.
 
 ## Phase 4 — Chat, Writer và PDF
 
@@ -61,7 +72,7 @@ Ban đầu sandbox chặn kết nối proxy. Cài đặt và build đã thành c
 - [x] PDF max 4 MiB / 80 trang; trích 20 trang đầu / 24.000 ký tự; hiển thị rõ phạm vi, không có OCR/full-document retrieval.
 - [x] Test PDF thật: đọc text, cắt còn 20 trang, từ chối >80 trang, malformed và PDF không có text.
 - [ ] Gọi OpenAI thật với các tool và kiểm tra end-to-end lưu dữ liệu — cần API key và Supabase.
-- [ ] Kiểm tra PDF worker trên Vercel staging — chưa deploy.
+- [ ] Kiểm tra PDF worker trên Vercel với Supabase thật — đã có deployment, đang chờ khóa và redeploy.
 
 AI hiện trả kết quả không streaming để hoàn tất lưu trữ và quota trước khi báo thành công. Không có phản hồi AI giả.
 
