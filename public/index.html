@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Báo VnExpress - Báo tiếng Việt nhiều người xem nhất</title>
+<style>
+/* ===== RESET & BASE ===== */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Merriweather',Arial,'Noto Sans',sans-serif;background:#f5f5f5;color:#333;line-height:1.5;transition:background .3s,color .3s}
+a{text-decoration:none;color:#1a1a1a}
+a:hover{color:#b80000}
+ul{list-style:none}
+img{max-width:100%;height:auto;display:block}
+button{cursor:pointer;border:none;outline:none;background:none}
+input{outline:none;border:none}
+
+/* ===== DARK MODE ===== */
+body.dark{background:#1a1a2e;color:#e0e0e0}
+body.dark a{color:#ccc}
+body.dark a:hover{color:#ff6b6b}
+body.dark .header-top{background:#16213e}
+body.dark .header-nav{background:#0f3460;border-bottom-color:#1a1a5e}
+body.dark .section-topstory,.dark .article-item,.dark .sidebar-box,.dark .article-detail-wrap,.dark .comment-box{background:#16213e}
+body.dark .title-news a,body.dark .title_news a{color:#e0e0e0}
+body.dark .description{color:#aaa}
+body.dark .footer{background:#0a0a23}
+body.dark .search-overlay{background:rgba(10,10,35,.97)}
+body.dark .ticker-bar{background:#0f3460}
+body.dark .widget-weather{background:#16213e}
+body.dark .sidebar-box{border-color:#2a2a4a}
+body.dark .comment-item{border-color:#2a2a4a}
+body.dark input,body.dark textarea{background:#1a1a3e;color:#e0e0e0;border-color:#333}
+body.dark .breadcrumb a{color:#aaa}
+body.dark .btn-load-more{background:#0f3460;color:#e0e0e0;border-color:#2a2a4a}
+
+/* ===== TICKER BAR ===== */
+.ticker-bar{background:#b80000;color:#fff;padding:4px 0;font-size:13px;overflow:hidden;position:relative}
+.ticker-bar .ticker-label{background:#8b0000;padding:4px 12px;font-weight:700;display:inline-block;position:relative;z-index:2;margin-right:15px;white-space:nowrap}
+.ticker-wrap{display:flex;align-items:center;max-width:1200px;margin:0 auto;overflow:hidden}
+.ticker-content{display:flex;animation:tickerScroll 30s linear infinite;white-space:nowrap}
+.ticker-content a{color:#fff;margin-right:40px;white-space:nowrap;font-weight:400}
+.ticker-content a:hover{text-decoration:underline;color:#ffd}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ===== HEADER TOP ===== */
+.header-top{background:#b80000;padding:6px 0}
+.header-top .container{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:8px}
+.logo svg{width:220px;height:36px}
+.logo-text{font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px;font-family:Arial,sans-serif}
+.logo-text span{font-weight:300}
+.header-actions{display:flex;align-items:center;gap:16px}
+.header-actions a,.header-actions button{color:#fff;font-size:13px;display:flex;align-items:center;gap:4px;background:none;border:none;cursor:pointer}
+.header-actions a:hover,.header-actions button:hover{opacity:.85;color:#fff}
+.header-date{color:rgba(255,255,255,.85);font-size:12px;margin-right:10px}
+.btn-search-toggle{font-size:18px!important;padding:4px}
+.btn-darkmode{font-size:16px!important;padding:4px;position:relative}
+.btn-login{background:rgba(255,255,255,.15)!important;padding:5px 14px!important;border-radius:3px;font-size:12px!important}
+
+/* ===== HEADER NAV ===== */
+.header-nav{background:#fff;border-bottom:1px solid #e0e0e0;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.header-nav .container{display:flex;align-items:center;overflow-x:auto;scrollbar-width:none}
+.header-nav .container::-webkit-scrollbar{display:none}
+.nav-menu{display:flex;align-items:center;gap:0;white-space:nowrap}
+.nav-menu li a{display:block;padding:10px 14px;font-size:14px;color:#333;font-weight:500;transition:color .2s;position:relative}
+.nav-menu li a:hover,.nav-menu li a.active{color:#b80000}
+.nav-menu li a.active::after{content:'';position:absolute;bottom:0;left:14px;right:14px;height:2px;background:#b80000}
+
+/* ===== CONTAINER ===== */
+.container{max-width:1200px;margin:0 auto;padding:0 15px}
+
+/* ===== WEATHER WIDGET ===== */
+.widget-weather{background:#fff;padding:10px 15px;margin:10px auto;max-width:1200px;border-radius:4px;display:flex;align-items:center;justify-content:space-between;font-size:13px;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.weather-left{display:flex;align-items:center;gap:15px}
+.weather-icon{font-size:28px}
+.weather-temp{font-size:20px;font-weight:700;color:#b80000}
+.weather-desc{color:#666;font-size:12px}
+.weather-cities{display:flex;gap:15px}
+.weather-cities span{color:#666;font-size:12px}
+
+/* ===== MAIN LAYOUT ===== */
+.main-wrap{max-width:1200px;margin:15px auto;display:flex;gap:20px;padding:0 15px}
+.col-left{flex:1;min-width:0}
+.col-right{width:300px;flex-shrink:0}
+
+/* ===== TOP STORY ===== */
+.section-topstory{background:#fff;padding:15px;border-radius:4px;margin-bottom:15px;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.topstory-main{margin-bottom:15px}
+.topstory-main .thumb-art{position:relative;border-radius:4px;overflow:hidden;margin-bottom:10px}
+.topstory-main .thumb-art img{width:100%;aspect-ratio:5/3;object-fit:cover;transition:transform .3s}
+.topstory-main .thumb-art:hover img{transform:scale(1.02)}
+.topstory-main .title-news{font-size:22px;font-weight:700;line-height:1.35;margin-bottom:8px}
+.topstory-main .title-news a{color:#1a1a1a}
+.topstory-main .title-news a:hover{color:#b80000}
+.topstory-main .description{font-size:14px;color:#555;line-height:1.6}
+.sub-news-top{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;padding-top:15px;border-top:1px solid #eee}
+.sub-news-item .thumb-art{border-radius:4px;overflow:hidden;margin-bottom:8px}
+.sub-news-item .thumb-art img{width:100%;aspect-ratio:5/3;object-fit:cover;transition:transform .3s}
+.sub-news-item .thumb-art:hover img{transform:scale(1.02)}
+.sub-news-item .title_news{font-size:14px;font-weight:600;line-height:1.4}
+.sub-news-item .title_news a{color:#1a1a1a}
+.sub-news-item .title_news a:hover{color:#b80000}
+
+/* ===== NEWS STREAM ===== */
+.article-item{background:#fff;padding:15px;border-radius:4px;margin-bottom:12px;display:flex;gap:15px;box-shadow:0 1px 2px rgba(0,0,0,.06);transition:box-shadow .2s}
+.article-item:hover{box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.article-item .thumb-art{width:220px;flex-shrink:0;border-radius:4px;overflow:hidden}
+.article-item .thumb-art img{width:100%;aspect-ratio:5/3;object-fit:cover;transition:transform .3s}
+.article-item .thumb-art:hover img{transform:scale(1.03)}
+.article-item .news-content{flex:1;min-width:0}
+.article-item .title-news{font-size:17px;font-weight:700;line-height:1.35;margin-bottom:6px}
+.article-item .title-news a{color:#1a1a1a}
+.article-item .title-news a:hover{color:#b80000}
+.article-item .description{font-size:13.5px;color:#555;line-height:1.6;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.meta-news{display:flex;align-items:center;gap:12px;font-size:12px;color:#999}
+.meta-news .category-stamp{color:#b80000;font-weight:600;text-transform:uppercase;font-size:11px}
+.meta-news .time-stamp{color:#999}
+.meta-news .comment-count{display:flex;align-items:center;gap:3px;color:#999;cursor:pointer}
+.meta-news .comment-count:hover{color:#b80000}
+.meta-news .comment-count svg{width:14px;height:14px}
+.location-stamp{color:#b80000;font-weight:600;margin-right:5px}
+.btn-load-more{display:block;width:100%;padding:12px;text-align:center;background:#fff;border:1px solid #ddd;border-radius:4px;font-size:14px;color:#333;cursor:pointer;margin-top:5px;transition:background .2s}
+.btn-load-more:hover{background:#f0f0f0}
+
+/* ===== SIDEBAR ===== */
+.sidebar-box{background:#fff;border-radius:4px;padding:15px;margin-bottom:15px;box-shadow:0 1px 2px rgba(0,0,0,.06);border:1px solid #eee}
+.sidebar-title{font-size:16px;font-weight:700;color:#b80000;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #b80000;text-transform:uppercase;letter-spacing:.5px}
+.sidebar-tabs{display:flex;gap:0;margin-bottom:12px;border-bottom:1px solid #eee}
+.sidebar-tab{padding:6px 12px;font-size:13px;cursor:pointer;color:#666;border-bottom:2px solid transparent;transition:all .2s}
+.sidebar-tab:hover,.sidebar-tab.active{color:#b80000;border-bottom-color:#b80000}
+.trending-list .trending-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0f0;align-items:flex-start}
+.trending-list .trending-item:last-child{border-bottom:none}
+.trending-num{font-size:22px;font-weight:900;color:#b80000;min-width:28px;line-height:1}
+.trending-item .tr-title{font-size:13.5px;font-weight:600;line-height:1.4;flex:1}
+.trending-item .tr-title a{color:#333}
+.trending-item .tr-title a:hover{color:#b80000}
+.sidebar-box .tag-list{display:flex;flex-wrap:wrap;gap:6px}
+.sidebar-box .tag-item{background:#f5f5f5;padding:4px 10px;border-radius:3px;font-size:12px;color:#555;cursor:pointer;transition:background .2s}
+.sidebar-box .tag-item:hover{background:#b80000;color:#fff}
+
+/* ===== SEARCH OVERLAY ===== */
+.search-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,.97);z-index:1000;display:none;justify-content:center;padding-top:120px}
+.search-overlay.show{display:flex}
+.search-inner{width:100%;max-width:680px;padding:0 20px}
+.search-inner h2{font-size:20px;margin-bottom:20px;color:#b80000}
+.search-form{display:flex;gap:0;margin-bottom:20px}
+.search-form input{flex:1;padding:12px 16px;border:2px solid #ddd;border-radius:4px 0 0 4px;font-size:16px;background:#fff}
+.search-form input:focus{border-color:#b80000}
+.search-form button{padding:12px 24px;background:#b80000;color:#fff;font-size:15px;border-radius:0 4px 4px 0;font-weight:600}
+.search-form button:hover{background:#a00000}
+.search-close{position:absolute;top:20px;right:30px;font-size:28px;cursor:pointer;color:#666;background:none;border:none}
+.search-results{margin-top:10px}
+.search-results .result-item{padding:12px 0;border-bottom:1px solid #eee;cursor:pointer}
+.search-results .result-item:hover{background:#fafafa}
+.search-results .result-item h4{font-size:15px;color:#1a1a1a;margin-bottom:4px}
+.search-results .result-item p{font-size:13px;color:#777}
+.search-suggestion{color:#888;font-size:13px}
+
+/* ===== ARTICLE DETAIL ===== */
+.article-detail-wrap{display:none;background:#fff;border-radius:4px;padding:25px 30px;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.article-detail-wrap.show{display:block}
+.breadcrumb{font-size:12px;color:#999;margin-bottom:15px;display:flex;align-items:center;gap:5px}
+.breadcrumb a{color:#b80000}
+.breadcrumb a:hover{text-decoration:underline}
+.article-detail .detail-title{font-size:26px;font-weight:700;line-height:1.35;margin-bottom:12px;color:#1a1a1a}
+.article-detail .detail-lead{font-size:16px;font-weight:600;line-height:1.6;margin-bottom:20px;color:#333}
+.article-detail .detail-meta{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid #eee;border-bottom:1px solid #eee;margin-bottom:20px}
+.detail-meta .author{font-size:13px;color:#b80000;font-weight:600}
+.detail-meta .date{font-size:13px;color:#999}
+.detail-actions{display:flex;gap:8px}
+.detail-actions button{padding:6px 10px;border-radius:4px;font-size:12px;color:#666;border:1px solid #ddd;display:flex;align-items:center;gap:4px;background:#fff;cursor:pointer;transition:all .2s}
+.detail-actions button:hover{border-color:#b80000;color:#b80000}
+.detail-actions button.bookmarked{color:#b80000;border-color:#b80000}
+.article-body{font-size:15.5px;line-height:1.85;color:#333}
+.article-body p{margin-bottom:18px;text-align:justify}
+.article-body img{width:100%;border-radius:4px;margin:15px 0}
+.article-body .img-caption{font-size:13px;color:#888;text-align:center;margin-top:-10px;margin-bottom:15px;font-style:italic}
+.article-body blockquote{border-left:3px solid #b80000;padding:10px 20px;margin:15px 0;background:#fafafa;font-style:italic;color:#555}
+.article-tags{display:flex;flex-wrap:wrap;gap:8px;margin:25px 0;padding-top:15px;border-top:1px solid #eee}
+.article-tags a{background:#f0f0f0;padding:5px 12px;border-radius:3px;font-size:12px;color:#555}
+.article-tags a:hover{background:#b80000;color:#fff}
+.btn-back{display:inline-flex;align-items:center;gap:5px;padding:8px 16px;background:#f5f5f5;border-radius:4px;font-size:13px;color:#333;margin-bottom:15px;cursor:pointer;border:1px solid #ddd}
+.btn-back:hover{background:#eee}
+
+/* ===== COMMENT SECTION ===== */
+.comment-section{margin-top:25px;padding-top:20px;border-top:2px solid #b80000}
+.comment-section h3{font-size:18px;font-weight:700;margin-bottom:15px;color:#1a1a1a}
+.comment-form{margin-bottom:20px}
+.comment-form textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:4px;font-size:14px;resize:vertical;min-height:80px;font-family:inherit}
+.comment-form textarea:focus{border-color:#b80000}
+.comment-form-actions{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.comment-form-actions .char-count{font-size:12px;color:#999}
+.btn-comment{padding:8px 20px;background:#b80000;color:#fff;border-radius:4px;font-size:14px;font-weight:600;cursor:pointer}
+.btn-comment:hover{background:#a00000}
+.comment-list{margin-top:15px}
+.comment-item{padding:12px 0;border-bottom:1px solid #f0f0f0}
+.comment-item:last-child{border-bottom:none}
+.comment-header{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.comment-avatar{width:32px;height:32px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#666}
+.comment-name{font-weight:700;font-size:13px;color:#333}
+.comment-time{font-size:11px;color:#999}
+.comment-body{font-size:14px;line-height:1.5;color:#444;padding-left:42px}
+.comment-actions{display:flex;gap:15px;padding-left:42px;margin-top:6px}
+.comment-actions button{font-size:12px;color:#999;cursor:pointer;display:flex;align-items:center;gap:3px;background:none;border:none}
+.comment-actions button:hover{color:#b80000}
+.comment-actions button.liked{color:#b80000}
+.sort-comments{display:flex;gap:10px;margin-bottom:15px}
+.sort-comments button{font-size:12px;padding:4px 10px;border-radius:3px;border:1px solid #ddd;background:#fff;color:#666;cursor:pointer}
+.sort-comments button.active{background:#b80000;color:#fff;border-color:#b80000}
+
+/* ===== SHARE POPUP ===== */
+.share-popup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;padding:25px;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.2);z-index:1001;min-width:320px}
+.share-popup.show{display:block}
+.share-popup h3{font-size:16px;margin-bottom:15px;color:#333}
+.share-popup .share-buttons{display:flex;gap:10px;flex-wrap:wrap}
+.share-btn{padding:10px 16px;border-radius:4px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;gap:6px}
+.share-btn.fb{background:#1877f2}
+.share-btn.tw{background:#1da1f2}
+.share-btn.zalo{background:#0068ff}
+.share-btn.copy{background:#666}
+.share-btn:hover{opacity:.9}
+.share-link{margin-top:12px;display:flex;gap:0}
+.share-link input{flex:1;padding:8px 10px;border:1px solid #ddd;border-radius:4px 0 0 4px;font-size:12px}
+.share-link button{padding:8px 14px;background:#b80000;color:#fff;border-radius:0 4px 4px 0;font-size:12px;border:none;cursor:pointer}
+.overlay-bg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000}
+.overlay-bg.show{display:block}
+.toast{position:fixed;bottom:30px;right:30px;background:#333;color:#fff;padding:12px 20px;border-radius:6px;font-size:14px;z-index:2000;transform:translateY(100px);opacity:0;transition:all .3s}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* ===== FONT SIZE CONTROLS ===== */
+.font-controls{display:flex;align-items:center;gap:6px;margin-bottom:15px}
+.font-controls button{width:30px;height:30px;border-radius:4px;border:1px solid #ddd;background:#fff;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.font-controls button:hover{border-color:#b80000;color:#b80000}
+.font-controls span{font-size:12px;color:#666}
+
+/* ===== SCROLL TO TOP ===== */
+.scroll-top{position:fixed;bottom:30px;right:30px;width:42px;height:42px;background:#b80000;color:#fff;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:18px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.2);z-index:500;border:none;transition:background .2s}
+.scroll-top:hover{background:#a00000}
+.scroll-top.show{display:flex}
+
+/* ===== FOOTER ===== */
+.footer{background:#333;color:#ccc;padding:30px 0 15px;margin-top:30px}
+.footer-top{display:flex;gap:40px;margin-bottom:25px;flex-wrap:wrap}
+.footer-col{flex:1;min-width:200px}
+.footer-col h4{color:#fff;font-size:14px;margin-bottom:12px;text-transform:uppercase}
+.footer-col a{display:block;font-size:13px;color:#aaa;padding:3px 0}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #555;padding-top:15px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.footer-bottom p{font-size:12px;color:#888}
+.footer-social{display:flex;gap:10px}
+.footer-social a{width:32px;height:32px;border-radius:50%;background:#555;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px}
+.footer-social a:hover{background:#b80000;color:#fff}
+
+/* ===== LOGIN MODAL ===== */
+.login-modal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;padding:30px;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.25);z-index:1001;width:380px;max-width:90vw}
+.login-modal.show{display:block}
+.login-modal h3{font-size:20px;font-weight:700;margin-bottom:20px;text-align:center;color:#b80000}
+.login-modal .form-group{margin-bottom:15px}
+.login-modal label{display:block;font-size:13px;margin-bottom:5px;color:#555}
+.login-modal input[type="text"],.login-modal input[type="password"],.login-modal input[type="email"]{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:4px;font-size:14px}
+.login-modal input:focus{border-color:#b80000}
+.login-modal .btn-submit{width:100%;padding:11px;background:#b80000;color:#fff;border:none;border-radius:4px;font-size:15px;font-weight:600;cursor:pointer;margin-top:5px}
+.login-modal .btn-submit:hover{background:#a00000}
+.login-modal .login-footer{text-align:center;margin-top:15px;font-size:13px;color:#666}
+.login-modal .login-footer a{color:#b80000}
+.login-close{position:absolute;top:10px;right:15px;font-size:22px;cursor:pointer;color:#999;background:none;border:none}
+.user-menu{position:relative}
+.user-dropdown{display:none;position:absolute;top:100%;right:0;background:#fff;box-shadow:0 4px 15px rgba(0,0,0,.15);border-radius:4px;min-width:160px;z-index:200;overflow:hidden}
+.user-dropdown.show{display:block}
+.user-dropdown a{display:block;padding:10px 15px;font-size:13px;color:#333!important;border-bottom:1px solid #f0f0f0}
+.user-dropdown a:hover{background:#f5f5f5;color:#b80000!important}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+.main-wrap{flex-direction:column}
+.col-right{width:100%}
+.sub-news-top{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+.header-top .container{flex-wrap:wrap;gap:8px}
+.header-date{display:none}
+.nav-menu li a{padding:8px 10px;font-size:13px}
+.article-item{flex-direction:column}
+.article-item .thumb-art{width:100%}
+.topstory-main .title-news{font-size:18px}
+.sub-news-top{grid-template-columns:1fr}
+.footer-top{flex-direction:column;gap:20px}
+.article-detail .detail-title{font-size:20px}
+.article-body{font-size:14px}
+}
+@media(max-width:480px){
+.logo-text{font-size:22px}
+.header-actions{gap:10px}
+.weather-cities{display:none}
+}
+
+/* ===== NOTIFICATION BADGE ===== */
+.notif-badge{background:#ff0;color:#b80000;font-size:10px;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-weight:700;position:absolute;top:-5px;right:-5px}
+
+/* ===== READING PROGRESS ===== */
+.reading-progress{position:fixed;top:0;left:0;height:3px;background:#b80000;z-index:9999;transition:width .1s}
+
+/* ===== CATEGORY LABEL ===== */
+.cat-label{display:inline-block;font-size:11px;font-weight:700;color:#b80000;text-transform:uppercase;margin-bottom:4px;letter-spacing:.3px}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .4s ease}
+</style>
+</head>
+<body>
+
+<!-- READING PROGRESS BAR -->
+<div class="reading-progress" id="readingProgress" style="width:0;display:none"></div>
+
+<!-- TICKER BAR -->
+<div class="ticker-bar">
+<div class="ticker-wrap">
+<span class="ticker-label">⚡ Tin nóng</span>
+<div class="ticker-content" id="tickerContent">
+<a href="javascript:;" onclick="openArticle(0)">Hà Nội yêu cầu làm rõ trách nhiệm vụ nam sinh ngã xuống cống tử vong</a>
+<a href="javascript:;" onclick="openArticle(1)">Chưa thí điểm thi tốt nghiệp THPT trên máy tính năm 2027</a>
+<a href="javascript:;" onclick="openArticle(2)">Chính phủ giữ quy định bắt buộc công chứng giao dịch đất đai</a>
+<a href="javascript:;" onclick="openArticle(3)">Tổng Bí thư, Chủ tịch nước Tô Lâm lên đường công du Mỹ, Canada</a>
+<a href="javascript:;" onclick="openArticle(4)">Giới tỷ phú Mỹ ráo riết săn vé dự quốc yến đón ông Tập</a>
+<a href="javascript:;" onclick="openArticle(0)">Hà Nội yêu cầu làm rõ trách nhiệm vụ nam sinh ngã xuống cống tử vong</a>
+<a href="javascript:;" onclick="openArticle(1)">Chưa thí điểm thi tốt nghiệp THPT trên máy tính năm 2027</a>
+<a href="javascript:;" onclick="openArticle(2)">Chính phủ giữ quy định bắt buộc công chứng giao dịch đất đai</a>
+</div>
+</div>
+</div>
+
+<!-- HEADER TOP -->
+<header class="header-top">
+<div class="container">
+<a href="javascript:;" class="logo" onclick="goHome()">
+<span class="logo-text">Vn<span>Express</span></span>
+</a>
+<div style="display:flex;align-items:center;gap:6px">
+<span class="header-date" id="headerDate"></span>
+<div class="header-actions">
+<button class="btn-darkmode" onclick="toggleDarkMode()" title="Chế độ tối">🌙</button>
+<button class="btn-search-toggle" onclick="toggleSearch()" title="Tìm kiếm">🔍</button>
+<a href="javascript:;" onclick="toggleNotif()" style="position:relative">🔔<span class="notif-badge">3</span></a>
+<button class="btn-login" id="btnLogin" onclick="toggleLogin()">Đăng nhập</button>
+<div class="user-menu" id="userMenu" style="display:none">
+<button onclick="toggleUserDropdown()" style="color:#fff;font-size:13px" id="userNameBtn">👤 Người dùng</button>
+<div class="user-dropdown" id="userDropdown">
+<a href="javascript:;">📄 Bài viết đã lưu</a>
+<a href="javascript:;">⚙️ Cài đặt</a>
+<a href="javascript:;" onclick="doLogout()">🚪 Đăng xuất</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+
+<!-- HEADER NAV -->
+<nav class="header-nav">
+<div class="container">
+<ul class="nav-menu" id="navMenu">
+<li><a href="javascript:;" class="active" data-cat="all" onclick="filterCategory('all',this)">Trang chủ</a></li>
+<li><a href="javascript:;" data-cat="thoi-su" onclick="filterCategory('thoi-su',this)">Thời sự</a></li>
+<li><a href="javascript:;" data-cat="the-gioi" onclick="filterCategory('the-gioi',this)">Thế giới</a></li>
+<li><a href="javascript:;" data-cat="kinh-doanh" onclick="filterCategory('kinh-doanh',this)">Kinh doanh</a></li>
+<li><a href="javascript:;" data-cat="bat-dong-san" onclick="filterCategory('bat-dong-san',this)">Bất động sản</a></li>
+<li><a href="javascript:;" data-cat="khoa-hoc" onclick="filterCategory('khoa-hoc',this)">Khoa học</a></li>
+<li><a href="javascript:;" data-cat="giai-tri" onclick="filterCategory('giai-tri',this)">Giải trí</a></li>
+<li><a href="javascript:;" data-cat="the-thao" onclick="filterCategory('the-thao',this)">Thể thao</a></li>
+<li><a href="javascript:;" data-cat="phap-luat" onclick="filterCategory('phap-luat',this)">Pháp luật</a></li>
+<li><a href="javascript:;" data-cat="giao-duc" onclick="filterCategory('giao-duc',this)">Giáo dục</a></li>
+<li><a href="javascript:;" data-cat="suc-khoe" onclick="filterCategory('suc-khoe',this)">Sức khỏe</a></li>
+<li><a href="javascript:;" data-cat="doi-song" onclick="filterCategory('doi-song',this)">Đời sống</a></li>
+<li><a href="javascript:;" data-cat="du-lich" onclick="filterCategory('du-lich',this)">Du lịch</a></li>
+<li><a href="javascript:;" data-cat="so-hoa" onclick="filterCategory('so-hoa',this)">Số hóa</a></li>
+<li><a href="javascript:;" data-cat="xe" onclick="filterCategory('xe',this)">Xe</a></li>
+<li><a href="javascript:;" data-cat="y-kien" onclick="filterCategory('y-kien',this)">Ý kiến</a></li>
+</ul>
+</div>
+</nav>
+
+<!-- WEATHER -->
+<div class="widget-weather">
+<div class="weather-left">
+<span class="weather-icon">⛅</span>
+<div>
+<div class="weather-temp">32°C</div>
+<div class="weather-desc">Hà Nội - Nhiều mây</div>
+</div>
+</div>
+<div class="weather-cities">
+<span>TP.HCM: 34°C ☀️</span>
+<span>Đà Nẵng: 30°C 🌤️</span>
+<span>Huế: 29°C 🌧️</span>
+</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-wrap">
+<div class="col-left">
+<!-- HOMEPAGE VIEW -->
+<div id="homeView">
+<!-- TOP STORY -->
+<div class="section-topstory" id="topstorySection">
+<div class="topstory-main">
+<div class="thumb-art">
+<a href="javascript:;" onclick="openArticle(0)">
+<img src="https://vcdn1-vnexpress.vnecdn.net/2026/09/20/815018554157899783035457910556-8509-9851-1789875670.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=lOiFcMOt72T2ozWLIpA7LA" alt="Hà Nội yêu cầu làm rõ trách nhiệm vụ nam sinh ngã xuống cống tử vong">
+</a>
+</div>
+<h3 class="title-news"><a href="javascript:;" onclick="openArticle(0)">Hà Nội yêu cầu làm rõ trách nhiệm vụ nam sinh ngã xuống cống tử vong</a></h3>
+<p class="description">Chủ tịch UBND TP Hà Nội yêu cầu làm rõ nguyên nhân, xác định trách nhiệm và giải pháp xử lý vụ nam sinh bị ngã xuống cống tử vong tại phường Đông Ngạc.</p>
+<div class="meta-news">
+<span class="category-stamp">Thời sự</span>
+<span class="time-stamp">2 giờ trước</span>
+<span class="comment-count" onclick="openArticle(0)">💬 <b>128</b></span>
+</div>
+</div>
+<div class="sub-news-top" id="subNewsTop">
+<div class="sub-news-item">
+<div class="thumb-art">
+<a href="javascript:;" onclick="openArticle(1)">
+<img src="https://vcdn1-vnexpress.vnecdn.net/2026/09/20/wm1-wm1-thi-tot-nghiep-1789881397-6788-1789881417.webp?w=300&h=180&q=100&dpr=1&fit=crop&s=K87PG0AKF7HEz2w5d4WBbw" alt="">
+</a>
+</div>
+<h3 class="title_news"><a href="javascript:;" onclick="openArticle(1)">Chưa thí điểm thi tốt nghiệp THPT trên máy tính năm 2027</a></h3>
+</div>
+<div class="sub-news-item">
+<div class="thumb-art">
+<a href="javascript:;" onclick="openArticle(2)">
+<img src="https://vcdn1-vnexpress.vnecdn.net/2026/09/20/dji-1789878808-6769-1789879074.jpg?w=300&h=180&q=100&dpr=1&fit=crop&s=tSe3ljdhBsTxj6Ab4VameA" alt="">
+</a>
+</div>
+<h3 class="title_news"><a href="javascript:;" onclick="openArticle(2)">Chính phủ giữ quy định bắt buộc công chứng giao dịch đất đai</a></h3>
+</div>
+<div class="sub-news-item">
+<div class="thumb-art">
+<a href="javascript:;" onclick="openArticle(5)">
+<img src="https://vcdn1-vnexpress.vnecdn.net/2026/09/20/202609200932333510-tcc-1789879-2415-4259-1789879192.jpg?w=300&h=180&q=100&dpr=1&fit=crop&s=sjyXHgF-uxvx7wN0CCO9PA" alt="">
+</a>
+</div>
+<h3 class="title_news"><a href="javascript:;" onclick="openArticle(5)">Bộ trưởng Hoàng Minh Sơn: 'Chúng tôi nghiêm túc rút kinh nghiệm khi để thiếu sách giáo khoa'</a></h3>
+</div>
+</div>
+</div>
+
+<!-- NEWS STREAM -->
+<div id="newsStream"></div>
+<button class="btn-load-more" id="btnLoadMore" onclick="loadMore()">Xem thêm ▼</button>
+</div>
+
+<!-- ARTICLE DETAIL VIEW -->
+<div class="article-detail-wrap" id="articleDetailWrap">
+<button class="btn-back" onclick="goHome()">← Quay lại trang chủ</button>
+<div class="font-controls">
+<span>Cỡ chữ:</span>
+<button onclick="changeFontSize(-1)">A-</button>
+<button onclick="changeFontSize(1)">A+</button>
+</div>
+<div class="breadcrumb" id="articleBreadcrumb"></div>
+<div class="article-detail" id="articleDetail"></div>
+<div class="comment-section" id="commentSection">
+<h3>💬 Ý kiến bạn đọc (<span id="commentCount">0</span>)</h3>
+<div class="sort-comments">
+<button class="active" onclick="sortComments('newest',this)">Mới nhất</button>
+<button onclick="sortComments('oldest',this)">Cũ nhất</button>
+<button onclick="sortComments('likes',this)">Quan tâm nhất</button>
+</div>
+<div class="comment-form">
+<textarea id="commentInput" placeholder="Viết bình luận của bạn..." maxlength="1000" oninput="updateCharCount()"></textarea>
+<div class="comment-form-actions">
+<span class="char-count"><span id="charCount">0</span>/1000</span>
+<button class="btn-comment" onclick="postComment()">Gửi bình luận</button>
+</div>
+</div>
+<div class="comment-list" id="commentList"></div>
+</div>
+</div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="col-right" id="sidebarWrap">
+<!-- TRENDING -->
+<div class="sidebar-box">
+<h3 class="sidebar-title">📈 Tin xem nhiều</h3>
+<div class="sidebar-tabs">
+<div class="sidebar-tab active" onclick="switchTrendTab('day',this)">Hôm nay</div>
+<div class="sidebar-tab" onclick="switchTrendTab('week',this)">Tuần này</div>
+<div class="sidebar-tab" onclick="switchTrendTab('month',this)">Tháng này</div>
+</div>
+<div class="trending-list" id="trendingList"></div>
+</div>
+
+<!-- LATEST NEWS -->
+<div class="sidebar-box">
+<h3 class="sidebar-title">🕐 Tin mới nhất</h3>
+<div id="latestNewsList"></div>
+</div>
+
+<!-- TAGS -->
+<div class="sidebar-box">
+<h3 class="sidebar-title">🏷️ Chủ đề nổi bật</h3>
+<div class="tag-list" id="tagList">
+<span class="tag-item" onclick="searchByTag(this)">Tổng Bí thư</span>
+<span class="tag-item" onclick="searchByTag(this)">Giáo dục</span>
+<span class="tag-item" onclick="searchByTag(this)">Bất động sản</span>
+<span class="tag-item" onclick="searchByTag(this)">Sách giáo khoa</span>
+<span class="tag-item" onclick="searchByTag(this)">Thời tiết</span>
+<span class="tag-item" onclick="searchByTag(this)">Công nghệ AI</span>
+<span class="tag-item" onclick="searchByTag(this)">Sạt lở đất</span>
+<span class="tag-item" onclick="searchByTag(this)">Pháp luật</span>
+<span class="tag-item" onclick="searchByTag(this)">Du lịch Việt Nam</span>
+<span class="tag-item" onclick="searchByTag(this)">Thể thao</span>
+</div>
+</div>
+</aside>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+<div class="container">
+<div class="footer-top">
+<div class="footer-col">
+<h4>VnExpress</h4>
+<a href="javascript:;">Trang chủ</a>
+<a href="javascript:;">RSS</a>
+<a href="javascript:;">Sitemap</a>
+<a href="javascript:;">Chính sách bảo mật</a>
+<a href="javascript:;">Điều khoản sử dụng</a>
+<a href="javascript:;">Liên hệ</a>
+</div>
+<div class="footer-col">
+<h4>Chuyên mục</h4>
+<a href="javascript:;" onclick="filterCategory('thoi-su')">Thời sự</a>
+<a href="javascript:;" onclick="filterCategory('the-gioi')">Thế giới</a>
+<a href="javascript:;" onclick="filterCategory('kinh-doanh')">Kinh doanh</a>
+<a href="javascript:;" onclick="filterCategory('giai-tri')">Giải trí</a>
+<a href="javascript:;" onclick="filterCategory('the-thao')">Thể thao</a>
+<a href="javascript:;" onclick="filterCategory('phap-luat')">Pháp luật</a>
+</div>
+<div class="footer-col">
+<h4>Dịch vụ</h4>
+<a href="javascript:;">Quảng cáo</a>
+<a href="javascript:;">Tuyển dụng</a>
+<a href="javascript:;">Đăng ký nhận tin</a>
+<a href="javascript:;">Tải ứng dụng</a>
+</div>
+<div class="footer-col">
+<h4>Liên hệ</h4>
+<p style="font-size:13px;line-height:1.8;color:#aaa">
+Tòa nhà FPT, Phố Duy Tân<br>
+Quận Cầu Giấy, Hà Nội<br>
+📞 024-7300-8899<br>
+✉️ contact@vnexpress.net
+</p>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2001-2026 VnExpress. Bản quyền thuộc về Báo điện tử VnExpress - MXH số 610/GP-BTTTT</p>
+<div class="footer-social">
+<a href="javascript:;" title="Facebook">f</a>
+<a href="javascript:;" title="YouTube">▶</a>
+<a href="javascript:;" title="Twitter">𝕏</a>
+<a href="javascript:;" title="Instagram">📷</a>
+</div>
+</div>
+</div>
+</footer>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay">
+<button class="search-close" onclick="toggleSearch()">✕</button>
+<div class="search-inner">
+<h2>🔍 Tìm kiếm tin tức</h2>
+<div class="search-form">
+<input type="text" id="searchInput" placeholder="Nhập từ khóa tìm kiếm..." oninput="doSearch()" autofocus>
+<button onclick="doSearch()">Tìm kiếm</button>
+</div>
+<p class="search-suggestion">Gợi ý: <a href="javascript:;" onclick="quickSearch('sạt lở')">sạt lở</a>, <a href="javascript:;" onclick="quickSearch('giáo dục')">giáo dục</a>, <a href="javascript:;" onclick="quickSearch('tỷ phú')">tỷ phú</a>, <a href="javascript:;" onclick="quickSearch('đất đai')">đất đai</a></p>
+<div class="search-results" id="searchResults"></div>
+</div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="overlay-bg" id="overlayBg" onclick="closeAllModals()"></div>
+<div class="login-modal" id="loginModal">
+<button class="login-close" onclick="toggleLogin()">✕</button>
+<h3>Đăng nhập VnExpress</h3>
+<div class="form-group">
+<label>Email hoặc số điện thoại</label>
+<input type="text" id="loginEmail" placeholder="Nhập email hoặc SĐT">
+</div>
+<div class="form-group">
+<label>Mật khẩu</label>
+<input type="password" id="loginPass" placeholder="Nhập mật khẩu">
+</div>
+<button class="btn-submit" onclick="doLogin()">Đăng nhập</button>
+<div class="login-footer">
+<p>Chưa có tài khoản? <a href="javascript:;" onclick="showToast('Chức năng đăng ký đang được phát triển')">Đăng ký</a></p>
+<p style="margin-top:5px"><a href="javascript:;" onclick="showToast('Vui lòng kiểm tra email để đặt lại mật khẩu')">Quên mật khẩu?</a></p>
+</div>
+</div>
+
+<!-- SHARE POPUP -->
+<div class="share-popup" id="sharePopup">
+<button class="login-close" onclick="closeShare()">✕</button>
+<h3>Chia sẻ bài viết</h3>
+<div class="share-buttons">
+<button class="share-btn fb" onclick="showToast('Đã chia sẻ lên Facebook!')">📘 Facebook</button>
+<button class="share-btn tw" onclick="showToast('Đã chia sẻ lên Twitter!')">🐦 Twitter</button>
+<button class="share-btn zalo" onclick="showToast('Đã chia sẻ qua Zalo!')">💬 Zalo</button>
+<button class="share-btn copy" onclick="copyLink()">📋 Copy link</button>
+</div>
+<div class="share-link">
+<input type="text" id="shareUrl" readonly value="">
+<button onclick="copyLink()">Copy</button>
+</div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- SCROLL TO TOP -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// ===== ARTICLE DATA =====
+const articles = [
+{id:0,title:"Hà Nội yêu cầu làm rõ trách nhiệm vụ nam sinh ngã xuống cống tử vong",
+ category:"thoi-su",catName:"Thời sự",author:"Phạm Dự",time:"2 giờ trước",date:"20/09/2026 10:30",comments:128,
+ img:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/815018554157899783035457910556-8509-9851-1789875670.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=lOiFcMOt72T2ozWLIpA7LA",
+ imgThumb:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/815018554157899783035457910556-8509-9851-1789875670.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=0D-KQgygcdYT6c-fscPKRA",
+ lead:"Chủ tịch UBND TP Hà Nội yêu cầu làm rõ nguyên nhân, xác định trách nhiệm và giải pháp xử lý vụ nam sinh bị ngã xuống cống tử vong tại phường Đông Ngạc.",
+ body:`<p>Ngày 20/9, UBND TP Hà Nội ban hành văn bản chỉ đạo yêu cầu kiểm tra, làm rõ trách nhiệm của các bên liên quan sau tai nạn trưa 18/9.</p>
+<p>Quyết định trên được đưa ra ngay sau khi báo chí phản ánh ý kiến của người dân về khu vực nam sinh bị ngã xuống cống tử vong thường xuyên xảy ra tình trạng ngập úng mỗi khi có mưa.</p>
+<img src="https://vcdn1-vnexpress.vnecdn.net/2026/09/20/815018554157899783035457910556-8509-9851-1789875670.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=lOiFcMOt72T2ozWLIpA7LA" alt="">
+<p class="img-caption">Khu vực xảy ra vụ tai nạn thương tâm tại phường Đông Ngạc, quận Bắc Từ Liêm. Ảnh: Người dân cung cấp.</p>
+<p>Theo chỉ đạo, Chủ tịch UBND TP Hà Nội yêu cầu UBND quận Bắc Từ Liêm chủ trì phối hợp với các sở, ngành liên quan kiểm tra, rà soát toàn bộ hệ thống thoát nước trên địa bàn, khẩn trương khắc phục các điểm ngập úng, đặc biệt tại khu vực xảy ra sự cố.</p>
+<p>Lãnh đạo thành phố cũng giao Sở Xây dựng rà soát, đánh giá lại toàn bộ hệ thống cống thoát nước, nắp cống trên các tuyến đường, khu dân cư để kịp thời phát hiện và khắc phục các điểm mất an toàn.</p>
+<blockquote>"Cần xử lý nghiêm các tổ chức, cá nhân thiếu trách nhiệm trong quản lý, vận hành hệ thống thoát nước dẫn đến hậu quả nghiêm trọng" - văn bản nêu rõ.</blockquote>
+<p>Trước đó, trưa 18/9, em N.V.H (15 tuổi, học sinh lớp 10) đang đi xe đạp trên đường Đông Ngạc thì bất ngờ bị nước cuốn, rơi xuống cống thoát nước đang mở nắp do trời mưa lớn. Mặc dù được người dân phát hiện và gọi lực lượng cứu hộ, nhưng em H. đã tử vong.</p>
+<p>Vụ việc gây bức xúc dư luận, nhiều người dân cho biết khu vực này thường xuyên ngập sâu khi mưa lớn và các nắp cống thường bị nước đẩy bật, gây nguy hiểm cho người đi đường.</p>`,
+ tags:["Hà Nội","ngập úng","cống thoát nước","an toàn đường phố","UBND Hà Nội"]},
+
+{id:1,title:"Chưa thí điểm thi tốt nghiệp THPT trên máy tính năm 2027",
+ category:"giao-duc",catName:"Giáo dục",author:"Thanh Hằng",time:"2 giờ trước",date:"20/09/2026 12:46",comments:95,
+ img:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/wm1-wm1-thi-tot-nghiep-1789881397-6788-1789881417.webp?w=680&h=408&q=100&dpr=1&fit=crop&s=LuXxLbW8B5ng0lKcoM2bsA",
+ imgThumb:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/wm1-wm1-thi-tot-nghiep-1789881397-6788-1789881417.webp?w=220&h=132&q=100&dpr=1&fit=crop&s=Z-veA-38sgdzOFGb7bmDOA",
+ lead:"Phó Thủ tướng chỉ đạo chưa thí điểm thi tốt nghiệp THPT trên máy tính vào năm 2027 như đề xuất của Bộ Giáo dục và Đào tạo, đảm bảo nguyên tắc công bằng giữa các thí sinh.",
+ body:`<p>Nội dung được nêu trong thông báo kết luận của Phó Thủ tướng Lê Tiến Châu sau cuộc họp về đề án tổ chức thi tốt nghiệp THPT trên máy tính và các giải pháp phòng, chống gian lận thi cử, cách đây hơn một tuần.</p>
+<p>Hồi tháng 7, trong đề án, Bộ Giáo dục và Đào tạo đề xuất tổ chức thi trên máy theo lộ trình, áp dụng thí điểm từ năm 2027 tại một số địa phương có điều kiện.</p>
+<img src="https://vcdn1-vnexpress.vnecdn.net/2026/09/20/wm1-wm1-thi-tot-nghiep-1789881397-6788-1789881417.webp?w=680&h=408&q=100&dpr=1&fit=crop&s=LuXxLbW8B5ng0lKcoM2bsA" alt="">
+<p class="img-caption">Thí sinh làm bài thi tốt nghiệp THPT năm 2026. Ảnh: Giang Huy</p>
+<p>Tuy nhiên, Phó Thủ tướng cho rằng cần đánh giá kỹ lưỡng điều kiện hạ tầng, thiết bị tại các địa phương trước khi triển khai. Việc tổ chức thi trên máy tính đòi hỏi hệ thống mạng ổn định, máy tính đồng bộ và đội ngũ kỹ thuật viên có năng lực.</p>
+<p>Bên cạnh đó, cần xây dựng ngân hàng đề thi đủ lớn, đảm bảo chất lượng và bảo mật. Phó Thủ tướng yêu cầu Bộ Giáo dục tiếp tục nghiên cứu, hoàn thiện đề án, báo cáo lại vào quý I/2027.</p>`,
+ tags:["thi tốt nghiệp","THPT","máy tính","Bộ Giáo dục","Phó Thủ tướng"]},
+
+{id:2,title:"Chính phủ giữ quy định bắt buộc công chứng giao dịch đất đai",
+ category:"bat-dong-san",catName:"Bất động sản",author:"Viễn Thông",time:"3 giờ trước",date:"20/09/2026 11:21",comments:76,
+ img:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/dji-1789878808-6769-1789879074.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=j-UmAsXlBw0uiMzQ1cTJZw",
+ imgThumb:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/dji-1789878808-6769-1789879074.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=C7gNy13wC44AJNGX8TWYjg",
+ lead:"Chính phủ yêu cầu giữ quy định bắt buộc công chứng với giao dịch chuyển nhượng quyền sử dụng đất, nhằm phòng ngừa, ngăn chặn rủi ro phát sinh tranh chấp, khiếu kiện.",
+ body:`<p>Trong Nghị quyết phiên họp chuyên đề pháp luật ngày 18/9, Chính phủ đồng thời nhấn mạnh giữ quy định bắt buộc công chứng giao dịch đất đai còn đảm bảo phù hợp với pháp luật chuyên ngành về công chứng.</p>
+<p>Bộ Nông nghiệp và Môi trường, cơ quan chủ trì soạn thảo dự án Luật Đất đai (sửa đổi), được giao tiếp thu ý kiến các thành viên Chính phủ, hoàn thiện dự thảo trình Quốc hội cho ý kiến tại kỳ họp tháng 10.</p>
+<img src="https://vcdn1-vnexpress.vnecdn.net/2026/09/20/dji-1789878808-6769-1789879074.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=j-UmAsXlBw0uiMzQ1cTJZw" alt="">
+<p class="img-caption">Khu đô thị mới tại TP Thủ Đức, TP HCM. Ảnh: Quỳnh Trần</p>
+<p>Quy định bắt buộc công chứng giao dịch đất đai đã được áp dụng từ lâu tại Việt Nam. Tuy nhiên, thời gian qua có nhiều ý kiến đề xuất bỏ quy định này để đơn giản hóa thủ tục, giảm chi phí cho người dân.</p>
+<blockquote>"Công chứng là biện pháp bảo vệ quyền lợi hợp pháp của các bên trong giao dịch bất động sản, giúp phòng ngừa tranh chấp và gian lận" - đại diện Bộ Tư pháp nhấn mạnh.</blockquote>`,
+ tags:["bất động sản","công chứng","đất đai","Chính phủ","Luật Đất đai"]},
+
+{id:3,title:"Tổng Bí thư, Chủ tịch nước Tô Lâm lên đường công du Mỹ, Canada",
+ category:"thoi-su",catName:"Thời sự",author:"Hoàng Phương",time:"4 giờ trước",date:"20/09/2026 10:00",comments:203,
+ img:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/202609200932333510-tcc-1789879-2415-4259-1789879192.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=mzKGqWSU-llyDv5doR60nQ",
+ imgThumb:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/202609200932333510-tcc-1789879-2415-4259-1789879192.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=LcaHyz9Ax-e_Ie4nx4-eDQ",
+ lead:"Tổng Bí thư, Chủ tịch nước Tô Lâm và phu nhân cùng đoàn đại biểu cấp cao Việt Nam rời Hà Nội, bắt đầu chuyến công du chính thức tới Mỹ và Canada.",
+ body:`<p>Sáng 20/9, Tổng Bí thư, Chủ tịch nước Tô Lâm và Phu nhân cùng đoàn đại biểu cấp cao Việt Nam đã rời Hà Nội, lên đường thăm chính thức Hoa Kỳ và Canada theo lời mời của Tổng thống Mỹ và Thủ tướng Canada.</p>
+<p>Chuyến công du diễn ra trong bối cảnh quan hệ Việt - Mỹ đang ở giai đoạn phát triển tốt đẹp sau khi hai nước nâng cấp quan hệ lên Đối tác Chiến lược Toàn diện.</p>
+<img src="https://vcdn1-vnexpress.vnecdn.net/2026/09/20/202609200932333510-tcc-1789879-2415-4259-1789879192.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=mzKGqWSU-llyDv5doR60nQ" alt="">
+<p class="img-caption">Tổng Bí thư, Chủ tịch nước Tô Lâm tại sân bay Nội Bài trước khi lên đường. Ảnh: TTXVN</p>
+<p>Dự kiến trong chuyến thăm, Tổng Bí thư, Chủ tịch nước sẽ có các cuộc hội đàm với Tổng thống Mỹ, gặp gỡ lãnh đạo Quốc hội, tiếp xúc với cộng đồng doanh nghiệp hàng đầu của Mỹ và thăm một số cơ sở công nghệ cao.</p>`,
+ tags:["Tổng Bí thư","Chủ tịch nước","Tô Lâm","Mỹ","Canada","ngoại giao"]},
+
+{id:4,title:"Giới tỷ phú Mỹ ráo riết săn vé dự quốc yến đón ông Tập",
+ category:"the-gioi",catName:"Thế giới",author:"Thanh Tâm",time:"5 giờ trước",date:"20/09/2026 09:15",comments:156,
+ img:"https://vcdn1-vnexpress.vnecdn.net/2026/09/19/AFP20260515B2WL3UQv2HighResChi-4555-3643-1789794233.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=YBsZDaaYY8_HDGv9BYh-Eg",
+ imgThumb:"https://vcdn1-vnexpress.vnecdn.net/2026/09/19/AFP20260515B2WL3UQv2HighResChi-4555-3643-1789794233.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=YBsZDaaYY8_HDGv9BYh-Eg",
+ lead:"Các tỷ phú Mỹ đang tích cực vận động để giành một chỗ tại quốc yến đón Chủ tịch Trung Quốc, biến sự kiện này thành cuộc cạnh tranh gay gắt.",
+ body:`<p>Các tỷ phú và lãnh đạo doanh nghiệp hàng đầu nước Mỹ đang ráo riết vận động để có được tấm vé tham dự buổi quốc yến đón Chủ tịch Trung Quốc Tập Cận Bình tại Nhà Trắng.</p>
+<p>Theo Bloomberg, số lượng vé có hạn nhưng nhu cầu rất lớn, khiến nhiều tỷ phú phải sử dụng các mối quan hệ chính trị và ngoại giao để đảm bảo một chỗ ngồi.</p>
+<img src="https://vcdn1-vnexpress.vnecdn.net/2026/09/19/AFP20260515B2WL3UQv2HighResChi-4555-3643-1789794233.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=YBsZDaaYY8_HDGv9BYh-Eg" alt="">
+<p class="img-caption">Chủ tịch Trung Quốc Tập Cận Bình. Ảnh: AFP</p>
+<p>Sự kiện này không chỉ mang ý nghĩa ngoại giao mà còn là cơ hội kinh doanh quý giá, khi các doanh nhân có thể tiếp cận trực tiếp với nhà lãnh đạo Trung Quốc - thị trường lớn thứ hai thế giới.</p>`,
+ tags:["tỷ phú Mỹ","Tập Cận Bình","quốc yến","Nhà Trắng","quan hệ Mỹ-Trung"]},
+
+{id:5,title:"Bộ trưởng Hoàng Minh Sơn: 'Chúng tôi nghiêm túc rút kinh nghiệm khi để thiếu sách giáo khoa'",
+ category:"giao-duc",catName:"Giáo dục",author:"Dương Tâm",time:"3 giờ trước",date:"20/09/2026 11:10",comments:187,
+ img:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/202609200932333510-tcc-1789879-2415-4259-1789879192.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=mzKGqWSU-llyDv5doR60nQ",
+ imgThumb:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/202609200932333510-tcc-1789879-2415-4259-1789879192.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=LcaHyz9Ax-e_Ie4nx4-eDQ",
+ lead:"Bộ trưởng Hoàng Minh Sơn cho biết việc dự báo nhu cầu, lập kế hoạch của ngành và từng địa phương chưa chính xác dẫn đến thừa thiếu sách giáo khoa cục bộ, Bộ rút kinh nghiệm nghiêm túc.",
+ body:`<p>Trong phiên giải trình sáng 20/9 tại Ủy ban Văn hóa và Xã hội của Quốc hội, Bộ trưởng Giáo dục và Đào tạo Hoàng Minh Sơn dành nhiều thời gian trả lời về việc thiếu sách giáo khoa thời gian qua.</p>
+<p>Ở nhiều tỉnh, thành như Huế, Đà Nẵng, Đắk Lắk, Gia Lai, An Giang, đặc biệt tại TP HCM, phụ huynh phải đôn đáo, xếp hàng mua sách cho con ngay trước thềm năm học mới.</p>
+<p>Bộ trưởng Sơn thừa nhận nguyên nhân chính là do việc dự báo nhu cầu sách giáo khoa chưa chính xác, đặc biệt trong bối cảnh chương trình giáo dục phổ thông mới đang được triển khai đồng loạt.</p>
+<blockquote>"Chúng tôi nghiêm túc rút kinh nghiệm và sẽ có giải pháp căn cơ để không tái diễn tình trạng này" - Bộ trưởng Hoàng Minh Sơn khẳng định.</blockquote>`,
+ tags:["Bộ trưởng","sách giáo khoa","thiếu sách","giáo dục","Hoàng Minh Sơn"]},
+
+{id:6,title:"Đất đá từ sườn núi tràn xuống, vùi lấp tỉnh lộ ở Nghệ An",
+ category:"thoi-su",catName:"Thời sự",author:"Nguyễn Hải",time:"2 giờ trước",date:"20/09/2026 13:01",comments:45,
+ img:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/Sequence03ezgifcomoptimize-178-4444-2689-1789880759.gif?w=680&h=408&q=100&dpr=1&fit=crop&s=VbeCM91RAIKQuUOr5mtLlw&t=image",
+ imgThumb:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/Sequence03ezgifcomoptimize-178-4444-2689-1789880759.gif?w=220&h=132&q=100&dpr=1&fit=crop&s=ihb4nHpJTLqobak2vd_AeQ&t=image",
+ lead:"Hàng trăm mét khối đất đá sạt xuống, vùi lấp khoảng 200 m tỉnh lộ 543C, chính quyền phải sơ tán hơn 50 hộ dân.",
+ body:`<p>Sáng 20/9, mưa lớn kéo dài khiến hàng trăm mét khối đất đá từ sườn núi sạt xuống, vùi lấp khoảng 200 mét đường tỉnh lộ 543C đoạn qua xã Tam Quang, huyện Tương Dương, Nghệ An.</p>
+<p>Chính quyền địa phương đã khẩn trương huy động lực lượng, phương tiện để giải phóng mặt đường. Đồng thời, sơ tán hơn 50 hộ dân sống gần khu vực sạt lở đến nơi an toàn.</p>
+<p>Hiện tuyến đường đã bị chia cắt hoàn toàn, các phương tiện giao thông không thể lưu thông. Lực lượng chức năng đang nỗ lực khắc phục, dự kiến cần ít nhất 2-3 ngày để thông tuyến.</p>`,
+ tags:["sạt lở","Nghệ An","tỉnh lộ","thiên tai","mưa lớn"]},
+
+{id:7,title:"Cô gái Italy ở lại Hà Giang vì tình yêu với chàng trai người Giáy",
+ category:"doi-song",catName:"Đời sống",author:"Phan Dương",time:"6 giờ trước",date:"20/09/2026 08:30",comments:234,
+ img:"https://vcdn1-giadinh.vnecdn.net/2026/09/17/1789443807270e9b38f52316259ef2-5713-2891-1789621113.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=ZmPeFzyvY6z3XeHQc-wwGw",
+ imgThumb:"https://vcdn1-giadinh.vnecdn.net/2026/09/17/1789443807270e9b38f52316259ef2-5713-2891-1789621113.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=ZmPeFzyvY6z3XeHQc-wwGw",
+ lead:"Đổ bệnh khi du lịch Hà Giang, cô gái Italy Karin được chàng chủ homestay chăm sóc tận tình nên quyết định ở lại Việt Nam để gắn bó với anh.",
+ body:`<p>Karin, 28 tuổi, đến từ Rome, Italy, bắt đầu chuyến du lịch Việt Nam vào đầu năm 2025. Khi đến Hà Giang, cô bất ngờ bị sốt cao và phải nghỉ lại homestay của Hoàng Văn Minh, 30 tuổi, người dân tộc Giáy.</p>
+<p>Minh đã tận tình chăm sóc Karin suốt một tuần, từ nấu cháo, đưa đi khám bệnh đến dịch thuốc. Sự ấm áp và chân thành của chàng trai vùng cao đã chinh phục trái tim cô gái phương xa.</p>
+<p>Sau khi khỏi bệnh, thay vì tiếp tục hành trình, Karin quyết định ở lại Hà Giang. Cô học tiếng Việt, tham gia vào công việc kinh doanh homestay cùng Minh và hòa nhập với cuộc sống cộng đồng địa phương.</p>`,
+ tags:["tình yêu","Hà Giang","Italy","homestay","người Giáy"]},
+
+{id:8,title:"Nguyễn Đức Anh bị truy tố về vụ sát hại 3 mẹ con ở Đồng Nai",
+ category:"phap-luat",catName:"Pháp luật",author:"Phước Tuấn",time:"5 giờ trước",date:"20/09/2026 09:00",comments:312,
+ img:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/image-1789873366-6918-1789873390.png?w=680&h=408&q=100&dpr=1&fit=crop&s=MUkZdNJ3BTja0dqFYLrYTg",
+ imgThumb:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/image-1789873366-6918-1789873390.png?w=220&h=132&q=100&dpr=1&fit=crop&s=MUkZdNJ3BTja0dqFYLrYTg",
+ lead:"Với 4 tình tiết định khung tăng nặng của tội Giết người, Nguyễn Đức Anh, 21 tuổi, bị truy tố về hai tội danh, trong đó mức hình phạt cao nhất là tử hình.",
+ body:`<p>Viện KSND tỉnh Đồng Nai vừa hoàn tất cáo trạng truy tố Nguyễn Đức Anh (21 tuổi, ngụ huyện Trảng Bom) về hai tội danh: Giết người và Cướp tài sản.</p>
+<p>Theo cáo trạng, Đức Anh có 4 tình tiết định khung tăng nặng gồm: giết người dưới 16 tuổi, giết nhiều người, có tính chất côn đồ, và vì động cơ đê hèn. Với các tình tiết này, mức hình phạt cao nhất có thể áp dụng là tử hình.</p>
+<p>Vụ án xảy ra vào tháng 7/2026 đã gây rúng động dư luận, khi nghi phạm sát hại cả 3 mẹ con nạn nhân tại nhà riêng để cướp tài sản.</p>`,
+ tags:["Đồng Nai","truy tố","giết người","pháp luật","Nguyễn Đức Anh"]},
+
+{id:9,title:"Vụ bé trai người Nhật tử vong tại resort 5 sao: Một người bị khởi tố",
+ category:"phap-luat",catName:"Pháp luật",author:"Ngọc An",time:"4 giờ trước",date:"20/09/2026 10:45",comments:89,
+ img:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/2aOboQzsrZCbALQRQGXkfRSKk8KUbh-5569-4231-1789875624.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=9qyNajzQKB6syJ8pYydgZw",
+ imgThumb:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/2aOboQzsrZCbALQRQGXkfRSKk8KUbh-5569-4231-1789875624.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=9qyNajzQKB6syJ8pYydgZw",
+ lead:"Nguyễn Quốc Quân bị khởi tố hành vi vi phạm quy định về hoạt động xây dựng, liên quan vụ bé trai người Nhật 11 tuổi chết đuối bất thường tại resort ở Mũi Né hơn 4 năm trước.",
+ body:`<p>Cơ quan CSĐT Công an tỉnh Bình Thuận đã ra quyết định khởi tố bị can đối với Nguyễn Quốc Quân (45 tuổi, giám đốc công ty quản lý resort) về tội vi phạm quy định về hoạt động xây dựng.</p>
+<p>Theo kết quả điều tra, resort nơi xảy ra vụ việc có nhiều hạng mục xây dựng không đúng thiết kế được phê duyệt, trong đó hồ bơi - nơi bé trai tử vong - không đảm bảo tiêu chuẩn an toàn.</p>
+<p>Vụ việc xảy ra vào tháng 6/2022, khi bé trai 11 tuổi quốc tịch Nhật Bản bị chết đuối tại hồ bơi của resort 5 sao ở Mũi Né trong kỳ nghỉ cùng gia đình.</p>`,
+ tags:["Lâm Đồng","resort","khởi tố","người Nhật","xây dựng"]},
+
+{id:10,title:"Hai bên ông bà thông gia bị khởi tố trong vụ 'con gái nói dối mang thai'",
+ category:"phap-luat",catName:"Pháp luật",author:"Lan Anh",time:"6 giờ trước",date:"20/09/2026 08:00",comments:445,
+ img:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/1-1789863336-9303-1789863343.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=j8R9rXz0m_B8XfWoPPMM3g",
+ imgThumb:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/1-1789863336-9303-1789863343.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=j8R9rXz0m_B8XfWoPPMM3g",
+ lead:"Bố mẹ đẻ, bố mẹ chồng, bác và thím họ của cô gái cùng bị khởi tố vì đến bệnh viện gây rối, livestream do tin con nói dối đang mang thai rồi bác sĩ chỉ định bỏ vì dị tật.",
+ body:`<p>Công an tỉnh Phú Thọ đã khởi tố 6 bị can liên quan vụ gây rối trật tự tại Bệnh viện Đa khoa tỉnh hồi tháng 8/2026.</p>
+<p>Theo điều tra, cô gái 22 tuổi nói dối gia đình rằng mình đang mang thai và bị bác sĩ chỉ định bỏ thai do dị tật. Tin lời con gái, hai bên ông bà thông gia đã kéo nhau đến bệnh viện gây rối, đập phá và livestream trên mạng xã hội.</p>
+<p>Sự việc gây náo loạn bệnh viện, ảnh hưởng nghiêm trọng đến hoạt động khám chữa bệnh. Sau khi cơ quan chức năng vào cuộc, cô gái thừa nhận đã nói dối gia đình.</p>`,
+ tags:["Phú Thọ","khởi tố","bệnh viện","gây rối","livestream"]},
+
+{id:11,title:"Giữ kỳ thi tốt nghiệp THPT với 'đa mục tiêu'",
+ category:"giao-duc",catName:"Giáo dục",author:"Lê Hiệp",time:"2 giờ trước",date:"20/09/2026 12:30",comments:67,
+ img:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/thi-thpt-la-m-thu-tu-c-thpt-ye-6511-2938-1789880475.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=ogxRsUkadl7T31eZFFCAIg",
+ imgThumb:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/thi-thpt-la-m-thu-tu-c-thpt-ye-6511-2938-1789880475.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=ogxRsUkadl7T31eZFFCAIg",
+ lead:"Kỳ thi tốt nghiệp THPT được giữ ổn định, vừa dùng xét tốt nghiệp, đánh giá chất lượng giáo dục, vừa có độ tin cậy để tuyển sinh đại học, cao đẳng.",
+ body:`<p>Kỳ thi tốt nghiệp THPT được giữ ổn định, vừa dùng xét tốt nghiệp, đánh giá chất lượng giáo dục, vừa có độ tin cậy để tuyển sinh đại học, cao đẳng, theo Bộ Giáo dục và Đào tạo.</p>
+<p>Phương án này được Bộ trưởng Hoàng Minh Sơn trình bày tại phiên giải trình trước Ủy ban Văn hóa và Xã hội sáng 20/9, nhấn mạnh việc cải tiến kỳ thi phải đảm bảo tính ổn định và không gây xáo trộn cho học sinh.</p>`,
+ tags:["thi tốt nghiệp","THPT","Bộ Giáo dục","đa mục tiêu"]},
+
+{id:12,title:"VN-Index giảm điểm phiên đầu tuần, khối ngoại bán ròng mạnh",
+ category:"kinh-doanh",catName:"Kinh doanh",author:"Minh Sơn",time:"3 giờ trước",date:"20/09/2026 11:00",comments:34,
+ img:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/dji-1789878808-6769-1789879074.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=j-UmAsXlBw0uiMzQ1cTJZw",
+ imgThumb:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/dji-1789878808-6769-1789879074.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=C7gNy13wC44AJNGX8TWYjg",
+ lead:"Thị trường chứng khoán Việt Nam tiếp tục chịu áp lực bán mạnh từ khối ngoại, VN-Index giảm gần 10 điểm trong phiên giao dịch đầu tuần.",
+ body:`<p>Kết thúc phiên giao dịch ngày 20/9, VN-Index giảm 9,82 điểm (-0,78%) xuống 1.249,35 điểm. Thanh khoản đạt hơn 18.000 tỷ đồng trên sàn HOSE.</p>
+<p>Khối ngoại tiếp tục bán ròng hơn 800 tỷ đồng, tập trung vào nhóm cổ phiếu ngân hàng và bất động sản. Áp lực bán lan rộng ra nhiều ngành.</p>`,
+ tags:["VN-Index","chứng khoán","khối ngoại","kinh doanh"]},
+
+{id:13,title:"Apple ra mắt iPhone 18 với thiết kế hoàn toàn mới",
+ category:"so-hoa",catName:"Số hóa",author:"Lưu Quý",time:"7 giờ trước",date:"20/09/2026 07:00",comments:567,
+ img:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/dji-1789878808-6769-1789879074.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=j-UmAsXlBw0uiMzQ1cTJZw",
+ imgThumb:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/dji-1789878808-6769-1789879074.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=C7gNy13wC44AJNGX8TWYjg",
+ lead:"Apple giới thiệu iPhone 18 series với thiết kế viền siêu mỏng, chip A20 Bionic và nhiều tính năng AI tiên tiến.",
+ body:`<p>Tại sự kiện đặc biệt vào tối 19/9 (giờ Việt Nam), Apple đã chính thức ra mắt dòng iPhone 18 với nhiều nâng cấp đáng chú ý.</p>
+<p>iPhone 18 sở hữu thiết kế viền màn hình siêu mỏng chỉ 1.2mm, chip A20 Bionic với hiệu năng AI vượt trội, camera 48MP cải tiến và pin dung lượng lớn hơn 15% so với thế hệ trước.</p>`,
+ tags:["Apple","iPhone 18","công nghệ","smartphone","A20 Bionic"]},
+
+{id:14,title:"Manchester United thắng kịch tính Liverpool ở phút bù giờ",
+ category:"the-thao",catName:"Thể thao",author:"Xuân Bình",time:"8 giờ trước",date:"20/09/2026 06:00",comments:389,
+ img:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/815018554157899783035457910556-8509-9851-1789875670.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=lOiFcMOt72T2ozWLIpA7LA",
+ imgThumb:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/815018554157899783035457910556-8509-9851-1789875670.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=0D-KQgygcdYT6c-fscPKRA",
+ lead:"Bàn thắng ở phút 90+3 của tiền đạo trẻ giúp Manchester United ngược dòng đánh bại Liverpool 3-2 trong trận derby nước Anh.",
+ body:`<p>Trận đấu thuộc vòng 5 Premier League giữa Manchester United và Liverpool diễn ra kịch tính từ đầu đến cuối.</p>
+<p>Liverpool mở tỷ số sớm ở phút 12 và nâng lên 2-0 trước giờ nghỉ. Tuy nhiên, MU đã thể hiện bản lĩnh khi ghi 3 bàn liên tiếp trong hiệp hai, trong đó bàn thắng quyết định đến ở phút bù giờ cuối cùng.</p>`,
+ tags:["Manchester United","Liverpool","Premier League","bóng đá","Ngoại hạng Anh"]},
+
+{id:15,title:"Phát hiện loài cá mới ở vùng biển sâu Việt Nam",
+ category:"khoa-hoc",catName:"Khoa học",author:"Minh Đức",time:"5 giờ trước",date:"20/09/2026 09:30",comments:78,
+ img:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/wm1-wm1-thi-tot-nghiep-1789881397-6788-1789881417.webp?w=680&h=408&q=100&dpr=1&fit=crop&s=LuXxLbW8B5ng0lKcoM2bsA",
+ imgThumb:"https://vcdn1-vnexpress.vnecdn.net/2026/09/20/wm1-wm1-thi-tot-nghiep-1789881397-6788-1789881417.webp?w=220&h=132&q=100&dpr=1&fit=crop&s=Z-veA-38sgdzOFGb7bmDOA",
+ lead:"Nhóm nghiên cứu Việt - Đức phát hiện loài cá mới sống ở độ sâu hơn 2.000m tại vùng biển miền Trung Việt Nam.",
+ body:`<p>Nhóm nghiên cứu liên hợp giữa Viện Hải dương học Nha Trang và Đại học Hamburg (Đức) vừa công bố phát hiện loài cá hoàn toàn mới cho khoa học.</p>
+<p>Loài cá này được đặt tên Pseudoliparis vietnamensis, sống ở độ sâu 2.100-2.300 mét, có thân hình trong suốt và khả năng phát quang sinh học độc đáo.</p>`,
+ tags:["khoa học","biển sâu","loài mới","Việt Nam","nghiên cứu"]}
+];
+
+// ===== COMMENTS DATA =====
+let commentsData = {};
+const sampleComments = [
+ {name:"Nguyễn Văn An",body:"Cần xử lý nghiêm các bên liên quan. Không thể để những vụ việc đáng tiếc như thế này xảy ra.",time:"1 giờ trước",likes:45,ts:Date.now()-3600000},
+ {name:"Trần Thị Bình",body:"Đọc tin mà xót xa quá. Mong các cơ quan chức năng sớm có biện pháp khắc phục.",time:"30 phút trước",likes:23,ts:Date.now()-1800000},
+ {name:"Lê Minh Châu",body:"Tình trạng này đã diễn ra từ lâu, tại sao bây giờ mới xử lý? Cần truy trách nhiệm cụ thể.",time:"45 phút trước",likes:67,ts:Date.now()-2700000},
+];
+
+// ===== BOOKMARKS =====
+let bookmarks = JSON.parse(localStorage.getItem('vne_bookmarks') || '[]');
+
+// ===== STATE =====
+let currentView = 'home';
+let currentArticle = null;
+let currentCategory = 'all';
+let loadedCount = 8;
+let currentFontSize = 15.5;
+let loggedIn = false;
+let currentUser = '';
+let commentSort = 'newest';
+
+// ===== INIT =====
+function init() {
+ updateDate();
+ renderNewsStream();
+ renderTrending();
+ renderLatestNews();
+ setInterval(updateDate, 60000);
+}
+
+// ===== DATE =====
+function updateDate() {
+ const d = new Date();
+ const days = ['Chủ nhật','Thứ hai','Thứ ba','Thứ tư','Thứ năm','Thứ sáu','Thứ bảy'];
+ const months = d.getMonth() + 1;
+ document.getElementById('headerDate').textContent =
+   days[d.getDay()] + ', ' + d.getDate() + '/' + months + '/' + d.getFullYear() +
+   ', ' + d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+}
+
+// ===== RENDER NEWS STREAM =====
+function renderNewsStream() {
+ const container = document.getElementById('newsStream');
+ let filtered = currentCategory === 'all' ? articles : articles.filter(a => a.category === currentCategory);
+ let html = '';
+ const max = Math.min(loadedCount, filtered.length);
+ for (let i = 0; i < max; i++) {
+   const a = filtered[i];
+   html += `<article class="article-item fade-in" onclick="openArticle(${a.id})">
+     <div class="thumb-art"><a href="javascript:;"><img src="${a.imgThumb}" alt="${a.title}" loading="lazy"></a></div>
+     <div class="news-content">
+       <span class="cat-label">${a.catName}</span>
+       <h3 class="title-news"><a href="javascript:;">${a.title}</a></h3>
+       <p class="description">${a.lead}</p>
+       <div class="meta-news">
+         <span class="category-stamp">${a.catName}</span>
+         <span class="time-stamp">${a.time}</span>
+         <span class="comment-count">💬 <b>${a.comments}</b></span>
+       </div>
+     </div>
+   </article>`;
+ }
+ container.innerHTML = html;
+ document.getElementById('btnLoadMore').style.display = max >= filtered.length ? 'none' : 'block';
+}
+
+// ===== LOAD MORE =====
+function loadMore() {
+ loadedCount += 5;
+ renderNewsStream();
+}
+
+// ===== FILTER CATEGORY =====
+function filterCategory(cat, el) {
+ currentCategory = cat;
+ loadedCount = 8;
+ document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
+ if (el) el.classList.add('active');
+ else {
+   document.querySelectorAll('.nav-menu a').forEach(a => {
+     if (a.dataset.cat === cat) a.classList.add('active');
+   });
+ }
+
+ // Update topstory based on category
+ const topSection = document.getElementById('topstorySection');
+ let filtered = cat === 'all' ? articles : articles.filter(a => a.category === cat);
+ if (filtered.length > 0) {
+   const main = filtered[0];
+   topSection.querySelector('.topstory-main .thumb-art a').setAttribute('onclick', `openArticle(${main.id})`);
+   topSection.querySelector('.topstory-main .thumb-art img').src = main.img;
+   topSection.querySelector('.topstory-main .title-news a').textContent = main.title;
+   topSection.querySelector('.topstory-main .title-news a').setAttribute('onclick', `openArticle(${main.id})`);
+   topSection.querySelector('.topstory-main .description').textContent = main.lead;
+   topSection.querySelector('.topstory-main .category-stamp').textContent = main.catName;
+
+   // sub news
+   const subItems = topSection.querySelectorAll('.sub-news-item');
+   for (let i = 0; i < 3; i++) {
+     if (filtered[i + 1]) {
+       subItems[i].style.display = 'block';
+       subItems[i].querySelector('img').src = filtered[i + 1].imgThumb || filtered[i + 1].img;
+       subItems[i].querySelector('.title_news a').textContent = filtered[i + 1].title;
+       subItems[i].querySelector('.title_news a').setAttribute('onclick', `openArticle(${filtered[i + 1].id})`);
+       subItems[i].querySelector('.thumb-art a').setAttribute('onclick', `openArticle(${filtered[i + 1].id})`);
+     } else {
+       subItems[i].style.display = 'none';
+     }
+   }
+ }
+
+ goHome();
+ renderNewsStream();
+ window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ===== OPEN ARTICLE =====
+function openArticle(id) {
+ const a = articles.find(x => x.id === id);
+ if (!a) return;
+ currentArticle = a;
+ currentView = 'article';
+
+ // Track read
+ let readIds = JSON.parse(localStorage.getItem('vne_read') || '[]');
+ if (!readIds.includes(id)) { readIds.push(id); localStorage.setItem('vne_read', JSON.stringify(readIds)); }
+
+ document.getElementById('homeView').style.display = 'none';
+ const wrap = document.getElementById('articleDetailWrap');
+ wrap.classList.add('show');
+ wrap.style.display = 'block';
+
+ const isBookmarked = bookmarks.includes(id);
+
+ document.getElementById('articleBreadcrumb').innerHTML =
+   `<a href="javascript:;" onclick="goHome()">Trang chủ</a> › <a href="javascript:;" onclick="filterCategory('${a.category}')">${a.catName}</a> › <span>${a.title.substring(0,40)}...</span>`;
+
+ document.getElementById('articleDetail').innerHTML = `
+   <h1 class="detail-title">${a.title}</h1>
+   <p class="detail-lead">${a.lead}</p>
+   <div class="detail-meta">
+     <div>
+       <span class="author">${a.author}</span>
+       <span class="date" style="margin-left:10px">${a.date}</span>
+     </div>
+     <div class="detail-actions">
+       <button onclick="toggleBookmark(${a.id})" class="${isBookmarked ? 'bookmarked' : ''}" id="bookmarkBtn">
+         ${isBookmarked ? '🔖 Đã lưu' : '📑 Lưu bài'}
+       </button>
+       <button onclick="openShare()">📤 Chia sẻ</button>
+       <button onclick="window.print()">🖨️ In bài</button>
+     </div>
+   </div>
+   <div class="article-body" id="articleBody" style="font-size:${currentFontSize}px">${a.body}</div>
+   <div class="article-tags">${a.tags.map(t => `<a href="javascript:;" onclick="searchByTagName('${t}')">${t}</a>`).join('')}</div>
+   <h4 style="margin:20px 0 10px;font-size:16px">📰 Tin liên quan</h4>
+   ${getRelatedArticles(a)}
+ `;
+
+ // Load comments
+ if (!commentsData[id]) {
+   commentsData[id] = JSON.parse(JSON.stringify(sampleComments));
+ }
+ renderComments(id);
+ document.getElementById('readingProgress').style.display = 'block';
+
+ window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ===== RELATED ARTICLES =====
+function getRelatedArticles(article) {
+ const related = articles.filter(a => a.id !== article.id && a.category === article.category).slice(0, 3);
+ if (related.length === 0) {
+   const others = articles.filter(a => a.id !== article.id).slice(0, 3);
+   return others.map(r => `<div class="article-item" onclick="openArticle(${r.id})" style="cursor:pointer">
+     <div class="thumb-art" style="width:120px"><img src="${r.imgThumb}" alt=""></div>
+     <div class="news-content"><h3 class="title-news" style="font-size:14px"><a href="javascript:;">${r.title}</a></h3>
+     <div class="meta-news"><span class="time-stamp">${r.time}</span></div></div></div>`).join('');
+ }
+ return related.map(r => `<div class="article-item" onclick="openArticle(${r.id})" style="cursor:pointer">
+   <div class="thumb-art" style="width:120px"><img src="${r.imgThumb}" alt=""></div>
+   <div class="news-content"><h3 class="title-news" style="font-size:14px"><a href="javascript:;">${r.title}</a></h3>
+   <div class="meta-news"><span class="time-stamp">${r.time}</span></div></div></div>`).join('');
+}
+
+// ===== GO HOME =====
+function goHome() {
+ currentView = 'home';
+ currentArticle = null;
+ document.getElementById('homeView').style.display = 'block';
+ document.getElementById('articleDetailWrap').style.display = 'none';
+ document.getElementById('articleDetailWrap').classList.remove('show');
+ document.getElementById('readingProgress').style.display = 'none';
+}
+
+// ===== FONT SIZE =====
+function changeFontSize(delta) {
+ currentFontSize = Math.max(12, Math.min(22, currentFontSize + delta));
+ const body = document.getElementById('articleBody');
+ if (body) body.style.fontSize = currentFontSize + 'px';
+}
+
+// ===== BOOKMARK =====
+function toggleBookmark(id) {
+ if (bookmarks.includes(id)) {
+   bookmarks = bookmarks.filter(b => b !== id);
+   showToast('Đã bỏ lưu bài viết');
+ } else {
+   bookmarks.push(id);
+   showToast('Đã lưu bài viết');
+ }
+ localStorage.setItem('vne_bookmarks', JSON.stringify(bookmarks));
+ const btn = document.getElementById('bookmarkBtn');
+ if (btn) {
+   btn.className = bookmarks.includes(id) ? 'bookmarked' : '';
+   btn.innerHTML = bookmarks.includes(id) ? '🔖 Đã lưu' : '📑 Lưu bài';
+ }
+}
+
+// ===== COMMENTS =====
+function renderComments(id) {
+ const comments = commentsData[id] || [];
+ document.getElementById('commentCount').textContent = comments.length;
+ let sorted = [...comments];
+ if (commentSort === 'newest') sorted.sort((a, b) => b.ts - a.ts);
+ else if (commentSort === 'oldest') sorted.sort((a, b) => a.ts - b.ts);
+ else sorted.sort((a, b) => b.likes - a.likes);
+
+ document.getElementById('commentList').innerHTML = sorted.map((c, i) => `
+   <div class="comment-item fade-in">
+     <div class="comment-header">
+       <div class="comment-avatar">${c.name.charAt(0)}</div>
+       <span class="comment-name">${c.name}</span>
+       <span class="comment-time">${c.time}</span>
+     </div>
+     <div class="comment-body">${c.body}</div>
+     <div class="comment-actions">
+       <button onclick="likeComment(${id},${i})" class="${c.liked ? 'liked' : ''}" id="likeBtn_${i}">👍 <span>${c.likes}</span></button>
+       <button onclick="replyComment('${c.name}')">💬 Trả lời</button>
+       <button onclick="showToast('Đã báo cáo bình luận')">⚠️ Báo cáo</button>
+     </div>
+   </div>
+ `).join('');
+}
+
+function postComment() {
+ if (!currentArticle) return;
+ const input = document.getElementById('commentInput');
+ const text = input.value.trim();
+ if (!text) { showToast('Vui lòng nhập nội dung bình luận'); return; }
+ if (!loggedIn) {
+   const name = 'Khách ' + Math.floor(Math.random() * 9000 + 1000);
+   commentsData[currentArticle.id].push({name, body: text, time: 'Vừa xong', likes: 0, ts: Date.now()});
+ } else {
+   commentsData[currentArticle.id].push({name: currentUser, body: text, time: 'Vừa xong', likes: 0, ts: Date.now()});
+ }
+ input.value = '';
+ document.getElementById('charCount').textContent = '0';
+ renderComments(currentArticle.id);
+ showToast('Bình luận đã được đăng');
+}
+
+function likeComment(articleId, idx) {
+ const c = commentsData[articleId][idx];
+ if (!c.liked) { c.likes++; c.liked = true; }
+ else { c.likes--; c.liked = false; }
+ renderComments(articleId);
+}
+
+function replyComment(name) {
+ const input = document.getElementById('commentInput');
+ input.value = '@' + name + ' ';
+ input.focus();
+}
+
+function sortComments(type, el) {
+ commentSort = type;
+ document.querySelectorAll('.sort-comments button').forEach(b => b.classList.remove('active'));
+ if (el) el.classList.add('active');
+ if (currentArticle) renderComments(currentArticle.id);
+}
+
+function updateCharCount() {
+ document.getElementById('charCount').textContent = document.getElementById('commentInput').value.length;
+}
+
+// ===== TRENDING =====
+function renderTrending(period) {
+ const shuffled = [...articles].sort(() => Math.random() - 0.5).slice(0, 5);
+ document.getElementById('trendingList').innerHTML = shuffled.map((a, i) => `
+   <div class="trending-item">
+     <span class="trending-num">${i + 1}</span>
+     <div class="tr-title"><a href="javascript:;" onclick="openArticle(${a.id})">${a.title}</a></div>
+   </div>
+ `).join('');
+}
+
+function switchTrendTab(period, el) {
+ document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+ el.classList.add('active');
+ renderTrending(period);
+}
+
+// ===== LATEST NEWS =====
+function renderLatestNews() {
+ const latest = [...articles].sort((a, b) => b.id - a.id).slice(0, 6);
+ document.getElementById('latestNewsList').innerHTML = latest.map(a => `
+   <div style="padding:8px 0;border-bottom:1px solid #f0f0f0;cursor:pointer" onclick="openArticle(${a.id})">
+     <div style="font-size:13px;font-weight:600;line-height:1.4;margin-bottom:3px"><a href="javascript:;" style="color:#333">${a.title}</a></div>
+     <div style="font-size:11px;color:#999">${a.time} · ${a.catName}</div>
+   </div>
+ `).join('');
+}
+
+// ===== SEARCH =====
+function toggleSearch() {
+ const overlay = document.getElementById('searchOverlay');
+ overlay.classList.toggle('show');
+ if (overlay.classList.contains('show')) {
+   document.getElementById('searchInput').focus();
+   document.body.style.overflow = 'hidden';
+ } else {
+   document.body.style.overflow = '';
+ }
+}
+
+function doSearch() {
+ const q = document.getElementById('searchInput').value.trim().toLowerCase();
+ if (!q) { document.getElementById('searchResults').innerHTML = ''; return; }
+ const results = articles.filter(a =>
+   a.title.toLowerCase().includes(q) || a.lead.toLowerCase().includes(q) || a.tags.some(t => t.toLowerCase().includes(q))
+ );
+ if (results.length === 0) {
+   document.getElementById('searchResults').innerHTML = '<p style="color:#999;padding:20px 0">Không tìm thấy kết quả nào.</p>';
+   return;
+ }
+ document.getElementById('searchResults').innerHTML = results.map(a => `
+   <div class="result-item" onclick="openArticle(${a.id});toggleSearch()">
+     <h4>${highlightText(a.title, q)}</h4>
+     <p>${a.catName} · ${a.time}</p>
+   </div>
+ `).join('');
+}
+
+function highlightText(text, query) {
+ const regex = new RegExp(`(${query})`, 'gi');
+ return text.replace(regex, '<mark style="background:#ffe0e0">$1</mark>');
+}
+
+function quickSearch(term) {
+ document.getElementById('searchInput').value = term;
+ doSearch();
+}
+
+function searchByTag(el) {
+ document.getElementById('searchInput').value = el.textContent;
+ toggleSearch();
+ setTimeout(doSearch, 100);
+}
+
+function searchByTagName(name) {
+ document.getElementById('searchInput').value = name;
+ toggleSearch();
+ setTimeout(doSearch, 100);
+}
+
+// ===== DARK MODE =====
+function toggleDarkMode() {
+ document.body.classList.toggle('dark');
+ const btn = document.querySelector('.btn-darkmode');
+ btn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+ localStorage.setItem('vne_dark', document.body.classList.contains('dark'));
+}
+
+// Load saved dark mode
+if (localStorage.getItem('vne_dark') === 'true') {
+ document.body.classList.add('dark');
+ document.querySelector('.btn-darkmode').textContent = '☀️';
+}
+
+// ===== LOGIN =====
+function toggleLogin() {
+ if (loggedIn) return;
+ document.getElementById('loginModal').classList.toggle('show');
+ document.getElementById('overlayBg').classList.toggle('show');
+}
+
+function doLogin() {
+ const email = document.getElementById('loginEmail').value.trim();
+ const pass = document.getElementById('loginPass').value.trim();
+ if (!email || !pass) { showToast('Vui lòng nhập đầy đủ thông tin'); return; }
+ loggedIn = true;
+ currentUser = email.split('@')[0] || email;
+ document.getElementById('btnLogin').style.display = 'none';
+ document.getElementById('userMenu').style.display = 'block';
+ document.getElementById('userNameBtn').textContent = '👤 ' + currentUser;
+ toggleLogin();
+ showToast('Đăng nhập thành công!');
+}
+
+function doLogout() {
+ loggedIn = false;
+ currentUser = '';
+ document.getElementById('btnLogin').style.display = 'block';
+ document.getElementById('userMenu').style.display = 'none';
+ document.getElementById('userDropdown').classList.remove('show');
+ showToast('Đã đăng xuất');
+}
+
+function toggleUserDropdown() {
+ document.getElementById('userDropdown').classList.toggle('show');
+}
+
+function closeAllModals() {
+ document.getElementById('loginModal').classList.remove('show');
+ document.getElementById('overlayBg').classList.remove('show');
+ document.getElementById('sharePopup').classList.remove('show');
+ document.getElementById('userDropdown').classList.remove('show');
+}
+
+// ===== SHARE =====
+function openShare() {
+ document.getElementById('sharePopup').classList.add('show');
+ document.getElementById('overlayBg').classList.add('show');
+ document.getElementById('shareUrl').value = 'https://vnexpress.net/' + (currentArticle ? currentArticle.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-') : '');
+}
+
+function closeShare() {
+ document.getElementById('sharePopup').classList.remove('show');
+ document.getElementById('overlayBg').classList.remove('show');
+}
+
+function copyLink() {
+ const url = document.getElementById('shareUrl').value;
+ navigator.clipboard.writeText(url).then(() => showToast('Đã sao chép link!')).catch(() => showToast('Đã sao chép link!'));
+ closeShare();
+}
+
+// ===== NOTIFICATION =====
+function toggleNotif() {
+ showToast('📢 Bạn có 3 thông báo mới');
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+ const t = document.getElementById('toast');
+ t.textContent = msg;
+ t.classList.add('show');
+ setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ===== SCROLL EVENTS =====
+window.addEventListener('scroll', () => {
+ // Scroll to top button
+ const btn = document.getElementById('scrollTop');
+ btn.classList.toggle('show', window.scrollY > 400);
+
+ // Reading progress
+ if (currentView === 'article') {
+   const bar = document.getElementById('readingProgress');
+   const max = document.documentElement.scrollHeight - window.innerHeight;
+   const pct = Math.min(100, (window.scrollY / max) * 100);
+   bar.style.width = pct + '%';
+ }
+});
+
+// Close dropdowns on click outside
+document.addEventListener('click', e => {
+ if (!e.target.closest('.user-menu')) {
+   document.getElementById('userDropdown').classList.remove('show');
+ }
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+ if (e.key === 'Escape') {
+   const search = document.getElementById('searchOverlay');
+   if (search.classList.contains('show')) toggleSearch();
+   closeAllModals();
+ }
+ if (e.ctrlKey && e.key === 'k') { e.preventDefault(); toggleSearch(); }
+});
+
+// ===== INIT =====
+init();
+</script>
+</body>
+</html>
