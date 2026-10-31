@@ -3,3 +3,9 @@ node_modules
 package-lock.json
 artifacts
 next-env.d.ts
+
+# Preserve the existing Firebase site's original formatting.
+firebase.json
+index.html
+public/404.html
+public/index.html

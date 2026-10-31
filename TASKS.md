@@ -79,6 +79,6 @@ Audit đầy đủ báo 16 moderate findings trong nhánh công cụ lint phát 
 - Đã xuất nguyên nội dung `install_script` từ draft revision 2 thành `scripts/setup.sh`.
 - Đã xuất nguyên nội dung `start_skill` thành `docs/CLOUD_ENVIRONMENT.md`.
 - `bash -n scripts/setup.sh` và Prettier check cho tài liệu đều đạt. Chưa chạy lại setup vì chỉ xuất file.
-- Chưa commit/push. Origin đã xác nhận là `github.com/dungpm0038-hue/han_phong_ai_tools`; nhánh hiện tại `work` chưa có commit.
+- Đã tạo commit cho mã nguồn trên nhánh `main`. Đang hợp nhất với commit Firebase hiện có trên `github.com/dungpm0038-hue/han_phong_ai_tools` để giữ lịch sử và các file cũ; kết quả push được xác nhận riêng bằng SHA từ remote.
 
 Tạo/chọn Supabase staging, apply migration, cấu hình Auth callback/SMTP rồi thêm các giá trị từ `.env.example` qua kênh cấu hình an toàn hoặc `.env.local` được gitignore. Đặt OpenAI key server-side và xác nhận quyền truy cập model. Không gửi secrets trong chat. Chỉ deploy Vercel hoặc đổi DNS sau phê duyệt riêng.
