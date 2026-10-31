@@ -2,6 +2,17 @@
 
 ## Triển khai website — 01/11/2026
 
+### Cập nhật sau khi cấp quyền Vercel
+
+- Vercel token đã được bind và API xác thực thành công. Supabase Management token và các khóa ứng dụng vẫn vắng mặt trong actual runtime.
+- Đã tạo project Vercel `han-phong-ai-tools` trên team `nhp6`, Node.js 24, production URL `https://han-phong-ai-tools.vercel.app`.
+- Đã upload đúng source commit `a5b982c`; deployment `dpl_4JnAUpEK4i8PSKjea5EGEMd4iYzF` được Vercel xác nhận READY và aliasAssigned=true.
+- Vercel GitHub App chưa được cài, nên dùng source upload qua API; push GitHub chưa tự kích hoạt deployment.
+- HTTP từ Codex tới domain production bị proxy CONNECT 403. Đã lưu thêm domain vào network draft, giữ hai miền API cũ; chưa tự Publish/apply môi trường.
+- Supabase/Auth/OpenAI chưa cấu hình thật; website đã có deployment nhưng chưa thể gọi là đầy đủ chức năng. Chưa sửa DNS hoặc gắn domain riêng. Chi tiết và việc còn lại: `docs/DEPLOYMENT_STATUS.md`.
+
+### Lịch sử chuẩn bị trước deployment
+
 - Người dùng yêu cầu triển khai và đã tạo project Supabase, gửi ảnh trạng thái Healthy. Ảnh xác nhận project tồn tại nhưng chưa cung cấp quyền quản trị hoặc xác minh schema.
 - Kiểm tra actual runtime: chưa có Supabase Management token, Vercel token, file env ứng dụng, outbound identity hoặc connector cho hai dịch vụ. Chưa thể chạy SQL trên project hoặc tạo deployment thật.
 - Đã lưu yêu cầu secret cá nhân `SUPABASE_ACCESS_TOKEN` và `VERCEL_TOKEN` vào draft cấu hình. Các đích API được thêm là `api.supabase.com` và `api.vercel.com`; chưa có giá trị hoặc observed readiness, chưa tự Publish môi trường.
