@@ -1,5 +1,7 @@
 # Hàn Phong AI Tools
 
+Triển khai lần đầu: [hướng dẫn đưa website lên Vercel bằng tiếng Việt](docs/GO_LIVE_VI.md).
+
 Vietnamese AI workspace: Chat, Writer and PDF. Next.js App Router, TypeScript, Tailwind v4, shadcn-style Radix/CVA UI, Lucide, Motion, Supabase Auth/PostgreSQL and OpenAI. Dark-first responsive interface for `https://nghiemhanphong.id.vn`.
 
 **Status:** implementation written; see [TASKS.md](TASKS.md) for executed checks and external blockers. Do not treat unexecuted build or integrations as verified. No real secrets or production deployment included.

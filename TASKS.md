@@ -1,5 +1,15 @@
 # Hàn Phong AI Tools — tiến độ
 
+## Triển khai website — 01/11/2026
+
+- Người dùng yêu cầu đưa ứng dụng lên website; xác nhận chưa tạo project Vercel hoặc Supabase.
+- Mã nguồn và cấu hình cloud đã push lên GitHub `main` tại commit `4475247` trước bước triển khai.
+- Đã kiểm tra cấu hình hiện có: không có project Vercel liên kết, Vercel CLI auth, biến môi trường Supabase/OpenAI hoặc file env production/local; không có connector triển khai Vercel trong phiên.
+- Đã thêm `vercel.json` chỉ định Next.js, `npm ci` và `npm run build`, giữ output mặc định để không nhầm website Firebase cũ với ứng dụng Next.js.
+- Đã viết `docs/GO_LIVE_VI.md`: tạo project, migration, biến môi trường, Auth/SMTP, kiểm thử thật, trình tự domain và DNS.
+- Chưa tạo deployment hoặc sửa DNS. Bước ngoài môi trường cần chủ tài khoản đăng nhập, tạo project, cấp quyền GitHub và nhập khóa dịch vụ an toàn.
+- Không tuyên bố website hoạt động đầy đủ trước khi có URL deployment và kiểm thử Supabase/OpenAI/PDF thực tế.
+
 Cập nhật: 31/10/2026. Mã nguồn được triển khai trong `/workspace/han_phong_ai_tools`; không deploy production, không thay đổi DNS và không triển khai thanh toán.
 
 ## Phase 1 — Thiết lập, kiến trúc và design system
