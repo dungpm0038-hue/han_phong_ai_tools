@@ -2,6 +2,17 @@
 
 ## Triển khai website — 01/11/2026
 
+### Cập nhật sau khi người dùng đồng ý chuyển hai khóa
+
+- Đã chuyển đúng hai khóa vào Production Vercel, service-role encrypted/server-only; không in hoặc ghi giá trị khóa ra file.
+- Deployment `dpl_6UqWf9V7dNGJh7F1YGgXmyJfbBYd` READY, source `fd7c19b`, dùng các biến Supabase/OpenAI thật.
+- Smoke test bằng tài khoản fixture qua Auth UI thật đạt: 2 login/dashboard, CRUD, RLS chéo tài khoản, PDF worker thật, validation MIME/content, settings/mobile, quota PostgreSQL đồng thời, xóa dữ liệu và logout/401.
+- Tài khoản fixture cùng dữ liệu/session/refresh-token đã được xóa, verified còn 0. Signup và gửi email chưa kiểm thử; SMTP riêng chưa cấu hình.
+- Chat/Writer/PDF AI đều trả 503; xác minh failed-request refunds dùng 0 lượt. Chưa kết luận nguyên nhân OpenAI.
+- Đã sửa response AI để có mã lỗi provider cố định và an toàn. Local build/typecheck/lint đạt, 23/23 test đạt; bản sửa chờ deploy.
+- Blocker mới xác minh: token Vercel hiện đúng user nhưng thiếu scope team nhp6, project API trả 403 forbidden, teams list rỗng. Cần token scope team nhp; không thử bypass/clone project khác hoặc lặp lại hành động bị từ chối quyền.
+- Chưa sửa DNS; không tự mua credit/API billing. Chi tiết: `docs/DEPLOYMENT_STATUS.md`.
+
 ### Cập nhật sau khi cấp quyền Supabase
 
 - Cả hai token Management đã ready và được kiểm tra bằng API thực tế. Project Supabase đúng là `gernmdmumfmmnlwyxkiw`; trang production trả HTTP 200 và đúng nội dung tiếng Việt.
@@ -52,7 +63,7 @@ Ban đầu sandbox chặn kết nối proxy. Cài đặt và build đã thành c
 - [x] Skeleton, toast, loading/error/not-found, keyboard skip link, biểu mẫu có label, favicon, sitemap và robots.
 - [x] Chromium kiểm tra trang công khai ở 1440×1000 và 390×844: không overflow ngang, FAQ, điều hướng, guard auth, 404, skip link và không có browser runtime error.
 - [x] Xem ảnh desktop/mobile và sửa animation để nội dung không bị ẩn khi reduced-motion hoặc chưa scroll.
-- [ ] Kiểm tra trực quan workspace đã đăng nhập trên mobile/desktop — cần Supabase thật.
+- [x] Smoke workspace đã đăng nhập và mobile menu trên production; kiểm tra thiết kế sâu hơn vẫn có thể bổ sung khi cần.
 
 ## Phase 3 — Supabase Auth và database
 
@@ -72,7 +83,7 @@ Ban đầu sandbox chặn kết nối proxy. Cài đặt và build đã thành c
 - [x] PDF max 4 MiB / 80 trang; trích 20 trang đầu / 24.000 ký tự; hiển thị rõ phạm vi, không có OCR/full-document retrieval.
 - [x] Test PDF thật: đọc text, cắt còn 20 trang, từ chối >80 trang, malformed và PDF không có text.
 - [ ] Gọi OpenAI thật với các tool và kiểm tra end-to-end lưu dữ liệu — cần API key và Supabase.
-- [ ] Kiểm tra PDF worker trên Vercel với Supabase thật — đã có deployment, đang chờ khóa và redeploy.
+- [x] Upload/trích PDF bằng worker Vercel với Supabase thật trả 201; AI hỏi đáp vẫn lỗi upstream 503.
 
 AI hiện trả kết quả không streaming để hoàn tất lưu trữ và quota trước khi báo thành công. Không có phản hồi AI giả.
 
@@ -84,7 +95,7 @@ AI hiện trả kết quả không streaming để hoàn tất lưu trữ và qu
 - [x] PDF 3 lần/phút, 20 lần/ngày và tối đa 20 tài liệu; recheck sức chứa atomically khi lưu sau parse.
 - [x] Zod, byte limits kể cả khi Content-Length sai/thiếu, Origin checks, escaped text, server-only credentials, no-store API headers.
 - [x] Test local các tình huống trên đạt. Script kiểm thử nhiều request đồng thời trên Supabase staging đã có.
-- [ ] Chạy script concurrency/RLS trên Supabase thật; PGlite chỉ có một embedded connection, không thay thế kiểm thử nhiều kết nối.
+- [x] Đã kiểm tra RLS qua API của hai tài khoản thật và 6 reservation đồng thời trên PostgreSQL thật: 1 reserved, 5 quota, API 429.
 - [ ] Thiết lập retention cleanup, quy trình xóa tài khoản, monitoring, SMTP/auth-abuse policy và global firewall trước mở public diện rộng.
 
 ## Phase 6 — Kiểm thử và chuẩn bị triển khai

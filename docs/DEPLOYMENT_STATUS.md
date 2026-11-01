@@ -6,8 +6,8 @@
 - Project: `han-phong-ai-tools`, team `nhp6` (Hobby).
 - Project ID: `prj_mg9C46BABNVSsPMwO3eXZaqah2IR`.
 - Team ID: `team_gMCOcp89zZHh3BgVfbEwaoxc`.
-- Deployment ID: `dpl_4JnAUpEK4i8PSKjea5EGEMd4iYzF`.
-- Source commit: `a5b982cc28f62a05c046123f0feb4864ae18d90c`.
+- Deployment đang phục vụ đã xác nhận: `dpl_6UqWf9V7dNGJh7F1YGgXmyJfbBYd`.
+- Source commit đang phục vụ: `fd7c19bfa7978461f16994518b3b84b6e41549c7`.
 - Vercel Management API đã xác nhận `readyState=READY`, `aliasAssigned=true`, không có deployment error.
 - Node.js 24, Next.js, install `npm ci`, build `npm run build`.
 - `NEXT_PUBLIC_SITE_URL` đã đặt bằng URL production ở trên.
@@ -25,22 +25,35 @@ Triển khai trực tiếp 81 file lấy từ Git commit (638.534 byte), không 
 - Auth Site URL là `https://han-phong-ai-tools.vercel.app`; redirect allowlist có đúng `/auth/callback`.
 - Mật khẩu tối thiểu 10 ký tự; xác nhận email vẫn bật (`mailer_autoconfirm=false`). SMTP riêng chưa cấu hình, nên chưa xác minh gửi email cho người dùng công khai.
 
-## Deployment và tích hợp còn thiếu
+## Cập nhật sau chấp thuận chuyển khóa
 
-- Trang chủ production đã trả HTTP 200; branding và headline tiếng Việt được xác minh sau khi quyền network mới được người dùng áp dụng.
-- Vercel Production đã có `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL` và tên biến `OPENAI_API_KEY`. Chưa đọc giá trị OpenAI key hoặc xác minh model/billing.
-- Hai khóa ứng dụng Supabase chưa được đọc/chuyển: `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (publishable hoặc anon) và `SUPABASE_SERVICE_ROLE_KEY` (service_role hoặc secret server key).
-- Automatic approval review từ chối hành động đọc service-role key và chuyển sang Vercel do cần chấp thuận riêng cho đúng payload/destination. Không thử đường vòng hoặc thực hiện lại hành động bị từ chối. Không có khóa bị in ra hay ghi vào repository.
-- Phạm vi đang chờ chủ tài khoản đồng ý: lấy hai khóa hiện có của đúng project `gernmdmumfmmnlwyxkiw`, lưu vào Environment Variables **Production** của Vercel `han-phong-ai-tools`, team `nhp6`, project ID `prj_mg9C46BABNVSsPMwO3eXZaqah2IR`, qua `api.vercel.com`. Public key dùng ở cấu hình public như Supabase thiết kế; service-role key lưu dạng encrypted, chỉ biến server, không có prefix NEXT_PUBLIC_. Không gửi khóa trong chat.
-- Chưa redeploy sau thay đổi cấu hình Supabase vì hai khóa còn bị chặn; bản build hiện tại chưa bật đầy đủ đăng nhập/dashboard/AI.
-- Bản sửa PDF đã qua compiled-worker/route tests với local fixtures; các công cụ và đăng nhập thực tế vẫn cần kiểm thử sau khi key được cấu hình và redeploy.
+- Người dùng đã đồng ý chuyển đúng hai khóa Supabase sang Vercel. Đã cấu hình `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (public) và `SUPABASE_SERVICE_ROLE_KEY` (encrypted, server-only) vào Production của đúng project; không in/log/ghi file giá trị khóa.
+- Đã redeploy với các biến môi trường thật. Deployment `dpl_6UqWf9V7dNGJh7F1YGgXmyJfbBYd`, source `fd7c19bfa7978461f16994518b3b84b6e41549c7`, được Vercel xác nhận READY và gắn production alias.
+- `OPENAI_API_KEY` đã có tên biến ở Production, nhưng các yêu cầu AI thật vẫn trả HTTP 503; chưa xác định được lỗi key, billing, model hay upstream. Không tuyên bố AI hoạt động.
 
-## Bước tiếp theo
+## Kết quả smoke test trên production
 
-1. Xin sự chấp thuận cụ thể cho việc đọc/chuyển hai khóa Supabase nói trên vào đúng Vercel project. Không yêu cầu chủ tài khoản gửi giá trị khóa trong chat.
-2. Khi được chấp thuận, thực hiện chuyển trực tiếp qua API, không in/log/ghi file khóa. Không xoay hoặc tạo thêm key nếu khóa hiện có sử dụng được.
-3. Redeploy production với cấu hình đầy đủ, kiểm tra Auth/session, Chat, Writer, PDF và quota với dịch vụ thật. Giữ nguyên RLS, email confirmation và các guard API.
-4. Hoàn thiện SMTP riêng trước khi mở đăng ký email rộng rãi; không tự mua dịch vụ hoặc cấu hình billing thay chủ tài khoản.
+Đã dùng hai tài khoản fixture xác nhận riêng bằng SQL, sau đó đăng nhập qua form thật và GoTrue thật. Không tự tạo JWT, không thêm route bỏ qua Auth, không tắt xác nhận email toàn cục, không gửi email cho người thật. Đây là kiểm tra password login và các API sau đăng nhập, chưa phải kiểm tra signup/email delivery.
+
+- Hai tài khoản đăng nhập và mở dashboard thành công; quota ban đầu 0.
+- Tạo/đổi tên cuộc trò chuyện thành công; đọc/sửa/xóa chéo tài khoản đều trả 404.
+- Upload PDF thật trả 201, trích đúng 1 trang; tài khoản khác không nhìn thấy tài liệu và bị từ chối hỏi đáp tài liệu không sở hữu.
+- Nội dung PDF không hợp lệ trả 422; sai MIME trả 415.
+- Settings lưu tên thật trong DB; menu mobile mở/đóng bằng Escape được kiểm tra.
+- Sáu reservation đồng thời trên PostgreSQL thật ở mốc đã dùng 14 lượt: chỉ 1 được giữ chỗ, 5 bị quota từ chối; API có đăng nhập trả 429 khi hết quota.
+- Ba yêu cầu AI (Chat/Writer/PDF) đều trả 503. Các yêu cầu thất bại không tiêu hao quota ngày; used=0 sau ba lần lỗi.
+- Xóa cuộc trò chuyện/tài liệu và đăng xuất thành công; API sau đăng xuất trả 401.
+- Cả hai tài khoản fixture và các rows profile/session/refresh-token/conversation/document/usage của chúng đã xóa và kiểm tra còn 0. Không xóa dữ liệu của tài khoản khác.
+
+## Bản sửa và blocker hiện tại
+
+- Đã viết phân loại lỗi OpenAI bằng các mã cố định, phân biệt auth/quota/rate-limit/model/quyền/upstream; không phản chiếu message gốc, prompt, headers hoặc API key vào response/log.
+- Bản sửa local đã đạt TypeScript, lint, production build và 23/23 test. Chưa deploy bản sửa đó nên chưa có chẩn đoán provider cuối cùng.
+- Kiểm tra Vercel mới nhất: token vẫn xác thực user `dungpm0038-hue`, nhưng GET project trong team `nhp6` trả 403 `forbidden`: "Not authorized: Trying to access resource under scope nhp6. You must re-authenticate to this scope or use a token with access to this scope." Danh sách team của token hiện rỗng.
+- Không thử truy cập vòng qua team, không tạo project khác để thay thế project đang bị từ chối quyền. Bản production đã deploy trước đó vẫn giữ nguyên.
+- Chủ tài khoản cần token Vercel có scope team **nhp** (`nhp6`), cập nhật đúng `VERCEL_TOKEN` trong Secrets Codex và áp dụng cấu hình. Không cần gửi token trong chat hoặc thay Supabase token đang hoạt động.
+- Sau khi quyền được khôi phục: redeploy bản sửa, kiểm tra lại mã lỗi AI, sửa cấu hình/model nếu cần và có thể; nếu billing/quota/key bên OpenAI không sử dụng được thì chủ tài khoản phải cập nhật trong Vercel hoặc tài khoản OpenAI. Không tự mua credit hay bật billing.
+- SMTP riêng chưa cấu hình, nên chưa xác minh đăng ký/xác nhận email cho người dùng công khai. Cần SMTP được chủ tài khoản cấu hình trước public launch rộng rãi.
 
 ## Domain riêng — chỉ đọc, chưa áp dụng
 

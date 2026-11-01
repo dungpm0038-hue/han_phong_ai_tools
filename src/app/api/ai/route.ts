@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/admin";
+import { describeProviderError } from "@/lib/ai-errors.mjs";
 import {
   requireUser,
   sameOrigin,
@@ -164,6 +165,13 @@ export async function POST(request: Request) {
       } catch {
         /* No sensitive payloads are logged. Pending reservations expire in the next claim. */
       }
+    }
+    if (e instanceof OpenAI.APIError) {
+      const failure = describeProviderError(e.status, e.code);
+      return NextResponse.json(
+        { error: failure.error, code: failure.code },
+        { status: failure.status },
+      );
     }
     return errorResponse(e);
   }
