@@ -2,6 +2,26 @@
 
 ## Triển khai website — 01/11/2026
 
+### Chốt trạng thái hiện tại
+
+- Deployment mới `dpl_CijoYpbkCYfbdG9N3K6TMprB6V7x` / source `02a45d9` READY, Vercel token team hoạt động; không còn blocker scope.
+- Probe thật đã phân loại `AI_PROVIDER_QUOTA`; chủ tài khoản xác nhận chưa cấp tín dụng API. Cần chủ tài khoản xử lý credit/billing/limits, không thể sửa bằng code hay quota DB. Không tự nạp tiền.
+- Supabase email confirmation vẫn bật; provider mặc định free từ chối sửa template. HTML Việt đã chuẩn bị, chưa áp dụng; thiếu SMTP thật và verified sender.
+- Domain đã khai báo/verified trong Vercel nhưng chưa đổi DNS Nhân Hòa. A vẫn `199.36.158.100`; phương án chờ duyệt chỉ thay A gốc sang `216.198.79.1`, giữ TTL/MX/TXT.
+- Root chưa có phiên quản trị DNS Nhân Hòa; cần chủ domain duyệt phương án và cấp quyền phù hợp hoặc thao tác bản ghi trong tài khoản riêng.
+- Đã chuẩn bị network draft cho đọc domain cuối, chưa tự Publish môi trường. Mọi fixture tài khoản/dữ liệu đã cleanup.
+- Hướng dẫn chủ tài khoản và rollback đã có ở `docs/LAUNCH_REMAINING_VI.md`; website chưa được gọi là đầy đủ AI/email/domain khi các prerequisite này chưa hoàn tất.
+
+### Kết quả mới nhất
+
+- Deployment `dpl_CijoYpbkCYfbdG9N3K6TMprB6V7x`, source `02a45d9`, READY. Vercel team permission đã hoạt động lại.
+- Probe thật xác định `AI_PROVIDER_QUOTA`, không phải quota app; cần owner kiểm tra tín dụng/billing/limits của đúng OpenAI project. Không tự nạp tiền hoặc nâng gói. Used=0 sau lỗi, fixture và dữ liệu đã xóa.
+- Người dùng xác nhận DNS Nhân Hòa và chưa có SMTP. Domain đã khai báo verified trên Vercel nhưng DNS A vẫn Firebase; chưa ghi DNS/canonical cutover.
+- Supabase từ chối template customization trên free/default SMTP; template Việt đã lưu trong repo, chưa áp dụng thay đổi bị từ chối. Cần custom SMTP thật và sender đã xác minh; confirmation vẫn bật.
+- Đã chuẩn bị phương án DNS một bản ghi A và các prerequisite email/AI trong `docs/LAUNCH_REMAINING_VI.md`. Chưa có quyền DNS Nhân Hòa; phải được duyệt trước khi chuyển traffic khỏi Firebase.
+- Network draft bổ sung `nghiemhanphong.id.vn` để kiểm tra HTTPS sau cutover, giữ nguyên các API/app host cũ; chưa tự Publish môi trường.
+- Chẩn đoán an toàn hiện có trên production. 25/25 test, typecheck, lint, format và build đạt; xem `docs/DEPLOYMENT_STATUS.md` để tránh nhầm các blocker lịch sử với trạng thái hiện tại.
+
 ### Tiếp tục sau khi token Vercel mới được áp dụng
 
 - Quyền team nhp6 đã được khôi phục; xác minh project và các tên biến production đúng, không cần chuyển lại khóa.

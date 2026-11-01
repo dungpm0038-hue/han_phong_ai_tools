@@ -2,7 +2,7 @@
 
 Triển khai lần đầu: [hướng dẫn đưa website lên Vercel bằng tiếng Việt](docs/GO_LIVE_VI.md).
 
-Deployment hiện tại và các tích hợp còn thiếu: [trạng thái triển khai](docs/DEPLOYMENT_STATUS.md).
+Deployment hiện tại và các tích hợp còn thiếu: [trạng thái triển khai](docs/DEPLOYMENT_STATUS.md). Các điều kiện mở public và phương án DNS: [việc còn lại](docs/LAUNCH_REMAINING_VI.md).
 
 Vietnamese AI workspace: Chat, Writer and PDF. Next.js App Router, TypeScript, Tailwind v4, shadcn-style Radix/CVA UI, Lucide, Motion, Supabase Auth/PostgreSQL and OpenAI. Dark-first responsive interface for `https://nghiemhanphong.id.vn`.
 
