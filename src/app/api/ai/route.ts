@@ -3,7 +3,10 @@ import { NextResponse } from "next/server";
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/admin";
-import { describeProviderError } from "@/lib/ai-errors.mjs";
+import {
+  describeProviderError,
+  providerDiagnostics,
+} from "@/lib/ai-errors.mjs";
 import {
   requireUser,
   sameOrigin,
@@ -167,7 +170,13 @@ export async function POST(request: Request) {
       }
     }
     if (e instanceof OpenAI.APIError) {
-      const failure = describeProviderError(e.status, e.code);
+      console.warn(
+        "ai_provider_failure",
+        JSON.stringify(
+          providerDiagnostics(e.status, e.code, e.type, e.headers),
+        ),
+      );
+      const failure = describeProviderError(e.status, e.code, e.type);
       return NextResponse.json(
         { error: failure.error, code: failure.code },
         { status: failure.status },

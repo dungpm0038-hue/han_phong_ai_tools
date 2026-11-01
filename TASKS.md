@@ -2,6 +2,16 @@
 
 ## Triển khai website — 01/11/2026
 
+### Tiếp tục sau khi token Vercel mới được áp dụng
+
+- Quyền team nhp6 đã được khôi phục; xác minh project và các tên biến production đúng, không cần chuyển lại khóa.
+- Đã redeploy source `02ec01c`; deployment `dpl_7uK2DL6N4Zg2njhGoQjRMcesAfGM` READY.
+- Hai lần probe AI sau khoảng nghỉ đều trả 429 `AI_PROVIDER_RATE_LIMIT`; login/logout thật và hoàn quota (used=0) vẫn đạt, fixture đã xóa. Đang lấy thêm chẩn đoán chỉ gồm status/type/code và các giới hạn số học để phân biệt hạn mức requests/tokens.
+- Người dùng xác nhận DNS tại Nhân Hòa, chưa có SMTP. Vercel đọc được NS zonedns.vn và A hiện tại `199.36.158.100` (Firebase).
+- Đã khai báo `nghiemhanphong.id.vn` vào đúng project Vercel, verified=true; chưa ghi DNS, chưa chuyển Site URL và traffic vẫn ở Firebase.
+- Đã chuẩn bị template confirmation tiếng Việt trong `supabase/templates/confirmation.html`. Supabase trả 400 rõ ràng rằng free tier dùng default email provider không cho sửa template; cần custom SMTP hoặc nâng plan. Không nâng gói, không áp dụng SMTP giả hoặc tắt xác nhận email.
+- Bản chẩn đoán được whitelist để không log key/prompt/message gốc; 25/25 unit/database/PDF tests và production build đạt trước khi đưa lên Vercel.
+
 ### Cập nhật sau khi người dùng đồng ý chuyển hai khóa
 
 - Đã chuyển đúng hai khóa vào Production Vercel, service-role encrypted/server-only; không in hoặc ghi giá trị khóa ra file.

@@ -3,8 +3,9 @@
  * raw message, request headers, prompt or API key in responses or logs.
  * @param {number | undefined} status
  * @param {string | null | undefined} code
+ * @param {string | null | undefined} [type]
  */
-export function describeProviderError(status, code) {
+export function describeProviderError(status, code, type) {
   if (status === 401 || code === "invalid_api_key") {
     return {
       status: 503,
@@ -13,7 +14,11 @@ export function describeProviderError(status, code) {
         "Khóa OpenAI chưa hợp lệ. Chủ website cần kiểm tra OPENAI_API_KEY trong Vercel.",
     };
   }
-  if (code === "insufficient_quota") {
+  if (
+    code === "insufficient_quota" ||
+    type === "insufficient_quota" ||
+    code === "billing_hard_limit_reached"
+  ) {
     return {
       status: 503,
       code: "AI_PROVIDER_QUOTA",
@@ -50,5 +55,51 @@ export function describeProviderError(status, code) {
     code: "AI_PROVIDER_UNAVAILABLE",
     error:
       "Chưa thể nhận phản hồi từ OpenAI. Vui lòng thử lại sau; lượt thất bại không tính vào hạn mức ngày.",
+  };
+}
+
+/**
+ * Owner diagnostics use only whitelisted categories and numeric response limits.
+ * No provider message, prompt, request header or credential is accepted here.
+ * @param {number | undefined} status
+ * @param {string | null | undefined} code
+ * @param {string | null | undefined} type
+ * @param {Headers | undefined} headers
+ */
+export function providerDiagnostics(status, code, type, headers) {
+  const codes = new Set([
+    "invalid_api_key",
+    "insufficient_quota",
+    "rate_limit_exceeded",
+    "model_not_found",
+    "billing_hard_limit_reached",
+  ]);
+  const types = new Set([
+    "tokens",
+    "requests",
+    "invalid_request_error",
+    "insufficient_quota",
+    "rate_limit_error",
+    "authentication_error",
+    "server_error",
+  ]);
+  const numeric = (/** @type {string} */ name) => {
+    const raw = headers?.get(name);
+    if (!raw || !/^-?\d+(?:\.\d+)?$/.test(raw)) return undefined;
+    const value = Number(raw);
+    return Number.isFinite(value) && value >= -1 && value <= 1e12
+      ? value
+      : undefined;
+  };
+  return {
+    status:
+      typeof status === "number" && status >= 100 && status <= 599 ? status : 0,
+    providerCode: code && codes.has(code) ? code : "unknown",
+    providerType: type && types.has(type) ? type : "unknown",
+    tokenLimit: numeric("x-ratelimit-limit-tokens"),
+    requestLimit: numeric("x-ratelimit-limit-requests"),
+    tokensRemaining: numeric("x-ratelimit-remaining-tokens"),
+    requestsRemaining: numeric("x-ratelimit-remaining-requests"),
+    retryAfterSeconds: numeric("retry-after"),
   };
 }
